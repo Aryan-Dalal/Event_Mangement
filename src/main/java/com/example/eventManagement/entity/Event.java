@@ -34,7 +34,10 @@ public class Event {
     private String imageUrl;
     @Column(name="category")
     private String category;
-
+    @Column(name="address")
+    private String address;
+    @Column(name="price")
+    private String price;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Registration> registrations;
 }

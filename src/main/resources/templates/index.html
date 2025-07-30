@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sangam | Event Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .card:hover {
+          cursor: pointer;
+          box-shadow: 0 0 15px #8b5cf6;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-hands-praying"></i>
+        <span>Sangam</span>
+    </div>
+    <nav class="nav-links">
+        <a href="/" th:href="@{/}">Home</a>
+        <a href="/events" th:href="@{/events}">Events</a>
+        <a href="/about" th:href="@{/about}">About</a>
+        <a href="/contact" th:href="@{/contact}">Contact</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Welcome to Sangam</h1>
+    <p>Celebrate, Connect & Create Unforgettable Memories</p>
+    <a href="#services" class="btn">Explore Events</a>
+</section>
+
+<!-- EVENT TYPE CARDS SECTION -->
+<section class="content-section" id="services">
+    <h1>Our Event Services</h1>
+    <div class="card-container">
+
+        <a href="/wedding-venues" class="card">
+            <img src="images/Wedding_Venue.png" alt="Wedding Venues">
+            <h2>Wedding Venue</h2>
+            <p>We organize beautiful, elegant weddings with stunning venues and custom themes.</p>
+        </a>
+
+        <!-- Static cards -->
+        <a href="/family-gatherings" class="card">
+            <img src="images/Family_Gatherings.png" alt="Family Gatherings">
+            <h2>Family Gatherings</h2>
+            <p>Celebrate precious moments with your loved ones in a warm, vibrant setting.</p>
+        </a>
+
+        <a href="/birthday-parties" class="card">
+            <img src="images/Birthday_Venue.png" alt="Birthday Parties">
+            <h2>Birthday Parties</h2>
+            <p>Fun-filled, themed birthday parties for all ages, tailored to your needs.</p>
+        </a>
+
+        <a href="/anniversaries" class="card">
+            <img src="images/Anniversaries.png" alt="Anniversaries">
+            <h2>Anniversaries</h2>
+            <p>Mark your special milestones with a romantic and unforgettable celebration.</p>
+        </a>
+
+    </div>
+</section>
+
+<footer class="footer">
+    <p>&copy; 2025 Sangam. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
