@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -21,8 +22,17 @@ public class EventController {
         model.addAttribute("weddingEvents", weddingEvents);
         return "wedding_venues";
     }
+//    passing model to the webpage with list of events
 
-    // Add similar mappings for:
-    // /birthday-parties, /anniversaries, /family-gatherings, etc.
+
+
+    @GetMapping("/events/location/{location}")
+    public String getEventsByLocation(@PathVariable String location, Model model) {
+        List<Event> events = eventRepository.findByLocationIgnoreCase(location);
+        model.addAttribute("weddingEvents", events);
+        return "wedding_venues"; // or the appropriate view name
+    }
+//    passing the location(String) and model list to the page
+
 }
 

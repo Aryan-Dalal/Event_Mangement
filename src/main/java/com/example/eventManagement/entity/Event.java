@@ -18,26 +18,46 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="event_id")
     private int eventId;
+
     @Column(name="name")
     private String name;
+
     @Column(name="description")
     private String description;
+
     @Column(name="date")
     private LocalDate date;
+
     @Column(name="time")
     private LocalTime time;
+
     @Column(name="venue")
     private String venue;
+
     @Column(name="location")
     private String location;
+
     @Column(name="image_url")
     private String imageUrl;
+
     @Column(name="category")
     private String category;
+
     @Column(name="address")
     private String address;
-    @Column(name="price")
-    private String price;
+
+    @Column(name = "veg_price")
+    private Double vegPrice;
+
+    @Column(name = "nonveg_price")
+    private Double nonvegPrice;
+
+    @Column(name = "decoration_price")
+    private Double decorationPrice;
+
+    @Column(name = "capacity")
+    private String capacity;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Registration> registrations;
 }
