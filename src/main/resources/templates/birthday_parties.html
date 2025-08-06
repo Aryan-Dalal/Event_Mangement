@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <title>Sangam | Wedding Venues</title>
+  <title>Sangam | Anniversaries</title>
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
@@ -27,7 +27,6 @@
       box-shadow: 0 0 12px #8b5cf6;
     }
 
-    /* Dropdown Style */
     .dropdown {
       position: relative;
       display: inline-block;
@@ -81,20 +80,20 @@
     <div class="dropdown">
       <button class="dropdown-btn">Location <i class="fa fa-caret-down"></i> </button>
       <div class="dropdown-content">
-        <a th:href="@{/wedding-venues/location/Mumbai}">Mumbai</a>
-        <a th:href="@{/wedding-venues/location/Thane}">Thane</a>
-        <a th:href="@{/wedding-venues/location/Pune}">Pune</a>
+        <a th:href="@{/birthday-parties/location/Mumbai}">Mumbai</a>
+        <a th:href="@{/birthday-parties/location/Thane}">Thane</a>
+        <a th:href="@{/birthday-parties/location/Pune}">Pune</a>
       </div>
     </div>
   </nav>
 </header>
 
 <section class="content-section">
-  <h1>Wedding Venue Events</h1>
+  <h1>Birthday Party Venues</h1>
   <div class="card-container">
 
-    <div class="card" th:each="event : ${weddingEvents}">
-      <img th:src="@{${event.imageUrl}}" alt="Wedding Event"/>
+    <div class="card" th:each="event : ${birthdayPartyEvents}">
+      <img th:src="@{${event.imageUrl}}" alt="Birthday Party Venue"/>
       <h2 th:text="${event.name}"></h2>
       <p><strong>Description:</strong> <span th:text="${event.description}"></span></p>
       <p><strong>Location:</strong> <span th:text="${event.location}"></span></p>

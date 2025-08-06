@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sangam | Anniversaries</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .card p {
+          margin: 5px 0;
+          color: #ccc;
+        }
+
+        .card button {
+          margin-top: 10px;
+          padding: 10px 16px;
+          background-color: #8b5cf6;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: 0.3s ease;
+        }
+
+        .card button:hover {
+          box-shadow: 0 0 12px #8b5cf6;
+        }
+
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+
+        .dropdown-btn {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 16px;
+          cursor: pointer;
+          padding: 8px 16px;
+        }
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #1e1e1e;
+          box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
+          z-index: 1;
+          min-width: 160px;
+        }
+
+        .dropdown-content a {
+          color: white;
+          padding: 10px 16px;
+          text-decoration: none;
+          display: block;
+        }
+
+        .dropdown-content a:hover {
+          background-color: #333;
+        }
+
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><i class="fa-solid fa-hands-praying"></i> <span>Sangam</span></div>
+    <nav class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/events}">Events</a>
+        <a th:href="@{/about}">About</a>
+        <a th:href="@{/contact}">Contact</a>
+
+        <!-- Location Dropdown -->
+        <div class="dropdown">
+            <button class="dropdown-btn">Location <i class="fa fa-caret-down"></i> </button>
+            <div class="dropdown-content">
+                <a th:href="@{/family-gatherings/location/Mumbai}">Mumbai</a>
+                <a th:href="@{/family-gatherings/location/Thane}">Thane</a>
+                <a th:href="@{/family-gatherings/location/Pune}">Pune</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="content-section">
+    <h1>Family Gathering Venues</h1>
+    <div class="card-container">
+
+        <div class="card" th:each="event : ${familyGatheringEvents}">
+            <img th:src="@{${event.imageUrl}}" alt="Family Gathering Venue"/>
+            <h2 th:text="${event.name}"></h2>
+            <p><strong>Description:</strong> <span th:text="${event.description}"></span></p>
+            <p><strong>Location:</strong> <span th:text="${event.location}"></span></p>
+            <br>
+            <a th:href="@{'/event/' + ${event.eventId}}"><button>View Details</button></a>
+        </div>
+
+    </div>
+</section>
+
+<footer class="footer">
+    <p>&copy; 2025 Sangam. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

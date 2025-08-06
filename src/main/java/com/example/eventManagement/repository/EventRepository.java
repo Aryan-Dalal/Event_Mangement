@@ -7,6 +7,8 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Integer> {
     List<Event> findByCategory(String category);
     List<Event> findByLocationIgnoreCase(String location);
+    List<Event> findByCategoryIgnoreCase(String category);
+    List<Event> findByCategoryIgnoreCaseAndLocationIgnoreCase(String category, String location);
 
 }
 
