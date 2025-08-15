@@ -22,8 +22,8 @@ public class User {
     private String email;
     @Column(name="password")
     private String password;
-    @Column(name="is_admin")
-    private boolean isAdmin;
+//    @Column(name="is_admin")
+//    private boolean isAdmin;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Registration> registrations;

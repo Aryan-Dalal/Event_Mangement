@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Sangam Event</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" th:href="@{/css/login-style.css}"/>
+</head>
+<body>
+
+<div class="wrapper">
+  <!-- Spring Security login processing URL -->
+  <form th:action="@{/login}" method="post">
+
+    <h1>Login</h1>
+
+    <!-- Email (Username for Spring Security) -->
+    <div class="input-box">
+      <input type="text" name="username" placeholder="Email" required>
+      <i class='bx bxs-envelope'></i>
+    </div>
+
+    <!-- Password -->
+    <div class="input-box">
+      <input type="password" name="password" placeholder="Password" required>
+      <i class='bx bxs-lock-alt'></i>
+    </div>
+
+    <!-- Remember Me -->
+    <div class="remember-forget">
+      <label><input type="checkbox" name="remember-me">Remember Me</label>
+      <a href="#">Forgot Password?</a>
+    </div>
+
+    <!-- Error Handling -->
+    <div th:if="${param.error}" style="color: red; margin-bottom: 10px;">
+      Invalid username or password.
+    </div>
+
+    <div th:if="${param.logout}" style="color: green; margin-bottom: 10px;">
+      You have been logged out successfully.
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn" >Login</button>
+
+    <!-- Register -->
+    <div class="register-link">
+      <p>Don't have an Account? <a th:href="@{/register}">Register</a></p>
+    </div>
+
+  </form>
+</div>
+</body>
+</html>

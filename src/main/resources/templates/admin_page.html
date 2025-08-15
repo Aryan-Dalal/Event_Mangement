@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Access | Sangam Event</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .card:hover {
+        cursor: pointer;
+        box-shadow: 0 0 15px #8b5cf6;
+    }
+    .admin-section h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <div class="logo">
+    <i class="fa-solid fa-user-shield"></i>
+    <span>Admin Access</span>
+  </div>
+  <nav class="nav-links">
+    <a th:href="@{/admin}">Dashboard</a>
+    <a th:href="@{/admin/requests}">Requests</a>
+    <a th:href="@{/admin/venues}">Venues</a>
+    <a th:href="@{/logout}">Logout</a>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1>Welcome, Aryan</h1>
+  <p>Manage user bookings, approve/deny requests, and oversee event venues.</p>
+</section>
+
+<!-- Admin Actions -->
+<section class="content-section admin-section">
+  <h1>Admin Controls</h1>
+  <div class="card-container">
+
+    <a th:href="@{/admin/requests}" class="card">
+      <img src="images/Admin_Requests.png" alt="Booking Requests">
+      <h2>Booking Requests</h2>
+      <p>Review and approve or reject booking requests from users.</p>
+    </a>
+
+    <a th:href="@{/admin/venues}" class="card">
+      <img src="images/Admin_Venues.png" alt="Manage Venues">
+      <h2>Manage Venues</h2>
+      <p>Add, edit, or remove event venues from the system.</p>
+    </a>
+
+    <a th:href="@{/admin/users}" class="card">
+      <img src="images/Admin_Users.png" alt="Manage Users">
+      <h2>Manage Users</h2>
+      <p>View registered users and assign roles.</p>
+    </a>
+
+    <a th:href="@{/admin/reports}" class="card">
+      <img src="images/Admin_Reports.png" alt="Reports">
+      <h2>Reports</h2>
+      <p>Generate and view booking and revenue reports.</p>
+    </a>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2025 Sangam. Admin Panel.</p>
+</footer>
+
+</body>
+</html>

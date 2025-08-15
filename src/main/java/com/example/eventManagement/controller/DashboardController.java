@@ -15,7 +15,7 @@ public class DashboardController {
     @Autowired
     private EventRepository eventRepository;
 
-    @GetMapping("/")
+    @GetMapping("/dashboard")
     public String showDashboard(Model model) {
         List<Event> events = eventRepository.findAll();
         model.addAttribute("events", events);
