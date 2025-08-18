@@ -31,9 +31,6 @@ public class Event {
     @Column(name="time")
     private LocalTime time;
 
-    @Column(name="venue")
-    private String venue;
-
     @Column(name="location")
     private String location;
 

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Venues | Sangam Event</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+                   margin: 0;
+                   padding: 0;
+                   box-sizing: border-box;
+                 }
+
+                 body {
+                   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+                   color: white;
+                   min-height: 100vh;
+                   line-height: 1.6;
+                 }
+
+                 .navbar {
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   padding: 20px 40px;
+                   background: rgba(30, 30, 30, 0.95);
+                   backdrop-filter: blur(20px);
+                   border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+                   position: sticky;
+                   top: 0;
+                   z-index: 100;
+                   transition: all 0.3s ease;
+                 }
+
+                 .navbar:hover {
+                   background: rgba(30, 30, 30, 0.98);
+                   border-bottom: 1px solid rgba(139, 92, 246, 0.4);
+                 }
+
+                 .logo {
+                   display: flex;
+                   align-items: center;
+                   font-size: 24px;
+                   font-weight: 700;
+                   gap: 12px;
+                   color: #8b5cf6;
+                   text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+                   transition: all 0.3s ease;
+                 }
+
+                 .logo:hover {
+                   transform: scale(1.05);
+                   text-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+                 }
+
+                 .logo i {
+                   font-size: 28px;
+                   filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+                 }
+
+                 .nav-links {
+                   display: flex;
+                   gap: 30px;
+                 }
+
+                 .nav-links a {
+                   color: #e2e8f0;
+                   text-decoration: none;
+                   font-weight: 500;
+                   padding: 10px 20px;
+                   border-radius: 8px;
+                   transition: all 0.3s ease;
+                   position: relative;
+                   overflow: hidden;
+                 }
+
+                 .nav-links a::before {
+                   content: '';
+                   position: absolute;
+                   top: 0;
+                   left: -100%;
+                   width: 100%;
+                   height: 100%;
+                   background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+                   transition: left 0.5s ease;
+                 }
+
+                 .nav-links a:hover::before {
+                   left: 100%;
+                 }
+
+                 .nav-links a:hover {
+                   color: #8b5cf6;
+                   background: rgba(139, 92, 246, 0.1);
+                   transform: translateY(-2px);
+                   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+                 }
+
+                 .hero {
+                   text-align: center;
+                   padding: 80px 20px;
+                   background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+                   position: relative;
+                   overflow: hidden;
+                 }
+
+                 .hero::before {
+                   content: '';
+                   position: absolute;
+                   top: 0;
+                   left: 0;
+                   right: 0;
+                   bottom: 0;
+                   background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(139,92,246,0.1)"/></svg>') repeat;
+                   animation: float 20s infinite linear;
+                 }
+
+                 @keyframes float {
+                   0% { transform: translateY(0px); }
+                   100% { transform: translateY(-100px); }
+                 }
+
+                 .hero h1 {
+                   font-size: 48px;
+                   margin-bottom: 15px;
+                   background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+                   background-clip: text;
+                   -webkit-background-clip: text;
+                   -webkit-text-fill-color: transparent;
+                   text-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+                   position: relative;
+                   z-index: 1;
+                 }
+
+                 .hero p {
+                   color: #cbd5e1;
+                   font-size: 18px;
+                   position: relative;
+                   z-index: 1;
+                 }
+
+                 .content-section {
+                   padding: 60px 40px;
+                 }
+
+                 .content-section h1 {
+                   text-align: center;
+                   margin-bottom: 40px;
+                   color: #8b5cf6;
+                   font-size: 32px;
+                   position: relative;
+                 }
+
+                 .content-section h1::after {
+                   content: '';
+                   position: absolute;
+                   bottom: -10px;
+                   left: 50%;
+                   transform: translateX(-50%);
+                   width: 60px;
+                   height: 3px;
+                   background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+                   border-radius: 2px;
+                 }
+
+                 .form-container {
+                   max-width: 900px;
+                   margin: 0 auto 60px;
+                   background: rgba(30, 30, 30, 0.8);
+                   backdrop-filter: blur(20px);
+                   padding: 40px;
+                   border-radius: 20px;
+                   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(139, 92, 246, 0.1);
+                   border: 1px solid rgba(139, 92, 246, 0.2);
+                   transition: all 0.3s ease;
+                 }
+
+                 .form-container:hover {
+                   transform: translateY(-5px);
+                   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.2);
+                 }
+
+                 form {
+                   display: grid;
+                   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                   gap: 25px;
+                 }
+
+                 .form-group {
+                   position: relative;
+                 }
+
+                 label {
+                   font-weight: 600;
+                   margin-bottom: 8px;
+                   display: block;
+                   color: #e2e8f0;
+                   font-size: 14px;
+                   text-transform: uppercase;
+                   letter-spacing: 0.5px;
+                 }
+
+                 input, textarea {
+                   width: 100%;
+                   padding: 15px 20px;
+                   border: 2px solid rgba(139, 92, 246, 0.2);
+                   border-radius: 12px;
+                   background: rgba(44, 44, 44, 0.8);
+                   color: white;
+                   font-size: 16px;
+                   transition: all 0.3s ease;
+                   backdrop-filter: blur(10px);
+                 }
+
+                 input:focus, textarea:focus {
+                   outline: none;
+                   border-color: #8b5cf6;
+                   background: rgba(44, 44, 44, 0.9);
+                   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1), 0 0 20px rgba(139, 92, 246, 0.2);
+                   transform: translateY(-2px);
+                 }
+
+                 input::placeholder, textarea::placeholder {
+                   color: #64748b;
+                 }
+
+                 textarea {
+                   resize: vertical;
+                   grid-column: 1 / -1;
+                   min-height: 120px;
+                 }
+
+                 .btn-group {
+                   grid-column: 1 / -1;
+                   text-align: center;
+                   margin-top: 20px;
+                   display: flex;
+                   gap: 15px;
+                   justify-content: center;
+                   flex-wrap: wrap;
+                 }
+
+                 button {
+                   padding: 15px 30px;
+                   border: none;
+                   border-radius: 12px;
+                   font-weight: 600;
+                   cursor: pointer;
+                   transition: all 0.3s ease;
+                   font-size: 16px;
+                   position: relative;
+                   overflow: hidden;
+                   text-transform: uppercase;
+                   letter-spacing: 0.5px;
+                   min-width: 140px;
+                 }
+
+                 button::before {
+                   content: '';
+                   position: absolute;
+                   top: 0;
+                   left: -100%;
+                   width: 100%;
+                   height: 100%;
+                   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                   transition: left 0.6s ease;
+                 }
+
+                 button:hover::before {
+                   left: 100%;
+                 }
+
+                 .btn-add {
+                   background: linear-gradient(135deg, #10b981, #059669);
+                   color: white;
+                   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+                 }
+
+                 .btn-add:hover {
+                   transform: translateY(-3px);
+                   box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+                 }
+
+                 .btn-update {
+                   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                   color: white;
+                   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+                 }
+
+                 .btn-update:hover {
+                   transform: translateY(-3px);
+                   box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+                 }
+
+                 .btn-delete {
+                   background: linear-gradient(135deg, #ef4444, #dc2626);
+                   color: white;
+                   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+                 }
+
+                 .btn-delete:hover {
+                   transform: translateY(-3px);
+                   box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+                 }
+
+                 .btn-reset {
+                   background: linear-gradient(135deg, #64748b, #475569);
+                   color: white;
+                   box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
+                 }
+
+                 .btn-reset:hover {
+                   transform: translateY(-3px);
+                   box-shadow: 0 8px 25px rgba(100, 116, 139, 0.4);
+                 }
+
+                 .venue-table {
+                   width: 100%;
+                   border-collapse: collapse;
+                   background: rgba(30, 30, 30, 0.8);
+                   backdrop-filter: blur(20px);
+                   border-radius: 20px;
+                   overflow: hidden;
+                   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                   border: 1px solid rgba(139, 92, 246, 0.2);
+                   margin-top: 20px;
+                 }
+
+                 .venue-table th,
+                 .venue-table td {
+                   padding: 20px;
+                   text-align: left;
+                   border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+                   transition: all 0.3s ease;
+                 }
+
+                 .venue-table th {
+                   background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+                   color: #8b5cf6;
+                   font-weight: 600;
+                   text-transform: uppercase;
+                   letter-spacing: 0.5px;
+                   font-size: 14px;
+                   position: relative;
+                 }
+
+                 .venue-table th::before {
+                   content: '';
+                   position: absolute;
+                   bottom: 0;
+                   left: 0;
+                   right: 0;
+                   height: 2px;
+                   background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+                 }
+
+                 .venue-table tbody tr {
+                   transition: all 0.3s ease;
+                 }
+
+                 .venue-table tbody tr:hover {
+                   background: rgba(139, 92, 246, 0.05);
+                   transform: scale(1.01);
+                   box-shadow: 0 5px 15px rgba(139, 92, 246, 0.1);
+                 }
+
+                 .venue-table tbody tr:nth-child(even) {
+                   background: rgba(44, 44, 44, 0.3);
+                 }
+
+                 .venue-table tbody tr:nth-child(even):hover {
+                   background: rgba(139, 92, 246, 0.08);
+                 }
+
+                 .venue-table td {
+                   font-size: 15px;
+                   color: #e2e8f0;
+                 }
+
+                 .footer {
+                   text-align: center;
+                   padding: 40px 20px;
+                   background: rgba(30, 30, 30, 0.8);
+                   backdrop-filter: blur(20px);
+                   color: #94a3b8;
+                   margin-top: 60px;
+                   border-top: 1px solid rgba(139, 92, 246, 0.2);
+                 }
+
+                 .footer p {
+                   font-size: 16px;
+                   letter-spacing: 0.5px;
+                 }
+
+                 /* Responsive Design */
+                 @media (max-width: 768px) {
+                   .navbar {
+                     padding: 15px 20px;
+                     flex-direction: column;
+                     gap: 20px;
+                   }
+
+                   .nav-links {
+                     gap: 20px;
+                   }
+
+                   .nav-links a {
+                     padding: 8px 15px;
+                     font-size: 14px;
+                   }
+
+                   .hero {
+                     padding: 60px 20px;
+                   }
+
+                   .hero h1 {
+                     font-size: 36px;
+                   }
+
+                   .content-section {
+                     padding: 40px 20px;
+                   }
+
+                   .form-container {
+                     padding: 30px 20px;
+                     margin: 0 auto 40px;
+                   }
+
+                   form {
+                     grid-template-columns: 1fr;
+                     gap: 20px;
+                   }
+
+                   .btn-group {
+                     flex-direction: column;
+                     align-items: center;
+                   }
+
+                   button {
+                     width: 100%;
+                     max-width: 200px;
+                   }
+
+                   .venue-table {
+                     font-size: 14px;
+                   }
+
+                   .venue-table th,
+                   .venue-table td {
+                     padding: 12px 8px;
+                   }
+                 }
+
+                 @media (max-width: 480px) {
+                   .hero h1 {
+                     font-size: 28px;
+                   }
+
+                   .venue-table {
+                     font-size: 12px;
+                   }
+
+                   .venue-table th,
+                   .venue-table td {
+                     padding: 10px 6px;
+                   }
+                 }
+
+                 /* Loading animations */
+                 @keyframes shimmer {
+                   0% { background-position: -1000px 0; }
+                   100% { background-position: 1000px 0; }
+                 }
+
+                 .loading-shimmer {
+                   background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+                   background-size: 1000px 100%;
+                   animation: shimmer 2s infinite;
+                 }
+
+                 /* Scroll animations */
+                 .fade-in {
+                   opacity: 0;
+                   transform: translateY(30px);
+                   animation: fadeInUp 0.8s ease forwards;
+                 }
+
+                 @keyframes fadeInUp {
+                   to {
+                     opacity: 1;
+                     transform: translateY(0);
+                   }
+                 }
+
+                 .form-container,
+                 .venue-table {
+                   animation: fadeInUp 0.8s ease forwards;
+                 }
+
+                 .venue-table {
+                   animation-delay: 0.2s;
+                 }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <div class="logo">
+    <i class="fa-solid fa-building"></i>
+    <span>Venue Admin</span>
+  </div>
+  <nav class="nav-links">
+    <a th:href="@{/admin}">Dashboard</a>
+    <a th:href="@{/requests}">Requests</a>
+    <a th:href="@{/admin/venues}">Venues</a>
+    <a th:href="@{/logout}">Logout</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Manage Venues</h1>
+  <p>Add, edit, or remove event venues from the system.</p>
+</section>
+
+<!-- Venue Form -->
+<section class="content-section">
+  <h1>Venue Form</h1>
+  <div class="form-container">
+    <form th:action="@{/admin/venues/save}" method="post" th:object="${event}">
+
+      <!-- ✅ Hidden Event ID field for update -->
+      <input type="hidden" th:field="*{eventId}" />
+
+      <div class="form-group">
+        <label for="venueName">Venue Name</label>
+        <input type="text" id="venueName" th:field="*{name}" placeholder="Enter venue name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" th:field="*{location}" placeholder="Enter location" required>
+      </div>
+
+      <!-- ✅ Address field -->
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" id="address" th:field="*{address}" placeholder="Enter full address" required>
+      </div>
+
+      <!-- ✅ Date field -->
+      <div class="form-group">
+        <label for="date">Event Date</label>
+        <input type="text" id="date" th:field="*{date}"  placeholder="YYYY-MM-DD" required>
+      </div>
+
+      <!-- ✅ Time field -->
+      <div class="form-group">
+        <label for="time">Event Time</label>
+        <input type="text" id="time" th:field="*{time}" placeholder="hh:mm:ss" required>
+      </div>
+
+      <div class="form-group">
+        <label for="capacity">Capacity</label>
+        <input type="text" id="capacity" th:field="*{capacity}" placeholder="Enter capacity" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" th:field="*{category}" placeholder="Enter category" required>
+      </div>
+
+      <div class="form-group">
+        <label for="vegPrice">Veg Price</label>
+        <input type="number" id="vegPrice" th:field="*{vegPrice}" placeholder="Enter veg price" required>
+      </div>
+
+      <div class="form-group">
+        <label for="nonvegPrice">Non-Veg Price</label>
+        <input type="number" id="nonvegPrice" th:field="*{nonvegPrice}" placeholder="Enter non-veg price" required>
+      </div>
+
+      <div class="form-group">
+        <label for="decorationPrice">Decoration Price</label>
+        <input type="number" id="decorationPrice" th:field="*{decorationPrice}" placeholder="Enter decoration price" required>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Venue Image</label>
+        <input type="text" id="image" th:field="*{imageUrl}" placeholder="e.g. venue1.png" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" th:field="*{description}" placeholder="Enter venue description..." required></textarea>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn-add">Save Venue</button>
+        <button type="reset" class="btn-reset">Reset</button>
+      </div>
+
+
+    </form>
+  </div>
+
+  <!-- Venue Table -->
+  <h1>All Venues</h1>
+  <table class="venue-table">
+    <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Address</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Capacity</th>
+      <th>Category</th>
+      <th>Veg Price</th>
+      <th>Non-Veg Price</th>
+      <th>Decoration</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="venue : ${venues}">
+      <td>
+        <img th:src="@{${venue.imageUrl}}" alt="Venue Image" style="width:80px; border-radius:8px;">
+      </td>
+      <td th:text="${venue.name}"></td>
+      <td th:text="${venue.location}"></td>
+      <td th:text="${venue.address}"></td>
+      <td th:text="${venue.date}"></td>
+      <td th:text="${venue.time}"></td>
+      <td th:text="${venue.capacity}"></td>
+      <td th:text="${venue.category}"></td>
+      <td th:text="${venue.vegPrice}"></td>
+      <td th:text="${venue.nonvegPrice}"></td>
+      <td th:text="${venue.decorationPrice}"></td>
+      <td>
+        <form th:action="@{/admin/venues/edit/{id}(id=${venue.eventId})}" method="get" style="display:inline;">
+          <button type="submit" class="btn-update">Edit</button>
+        </form>
+        <!-- ✅ Delete action -->
+        <form th:action="@{/admin/venues/delete/{id}(id=${venue.eventId})}" method="post" style="display:inline;">
+          <button type="submit" class="btn-delete"
+                  onclick="return confirm('Are you sure you want to delete this venue?');">
+            Delete
+          </button>
+        </form>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2025 Sangam. Venue Management.</p>
+</footer>
+
+</body>
+</html>
