@@ -16,7 +16,8 @@ public class VenueAdminController {
     @Autowired
     private EventRepository eventRepository;
 
-    // Show all venues
+    //-------------------------------LIST OF VENUES---------------------------------------------
+
     @GetMapping
     public String showVenues(Model model) {
         model.addAttribute("venues", eventRepository.findAll());
@@ -24,7 +25,7 @@ public class VenueAdminController {
         return "venues";
     }
 
-    // Save (Add or Update)
+    //-------------------------------ADDS and UPDATES YOUR VENUE---------------------------------------------
     @PostMapping("/save")
     public String saveVenue(@ModelAttribute("event") Event event) {
         if (event.getImageUrl() != null && !event.getImageUrl().startsWith("/images/")) {
@@ -34,7 +35,7 @@ public class VenueAdminController {
         return "redirect:/admin/venues";
     }
 
-    // Edit venue (pre-fill form)
+    //-------------------------------FETCHES INFO OF YOUR VENUE---------------------------------------------
     @GetMapping("/edit/{id}")
     public String editVenue(@PathVariable("id") int id, Model model) {
         Event venue = eventRepository.findById(id)
@@ -44,7 +45,7 @@ public class VenueAdminController {
         return "venues";
     }
 
-    // Delete venue
+    //-------------------------------DELETES YOUR VENUE---------------------------------------------
     @PostMapping("/delete/{id}")
     public String deleteVenue(@PathVariable("id") int id) {
         eventRepository.deleteById(id);
