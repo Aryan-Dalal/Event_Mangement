@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${event.name}">Event Details | Sangam Event</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #161616; color: white; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #1e1e1e; }
+        .logo { display: flex; align-items: center; font-size: 22px; font-weight: bold; gap: 10px; color: #8b5cf6; }
+        .nav-links a { color: white; margin-left: 30px; text-decoration: none; font-weight: 500; transition: color 0.5s; }
+        .nav-links a:hover { color: #8b5cf6; }
+
+        .main-container { display: flex; max-width: 1200px; margin: 40px auto; background-color: #252525; border-radius: 10px; overflow: hidden; box-shadow: 0 0 10px #000; }
+        .image-gallery { flex: 0 0 40%; max-height: 100vh; overflow-y: auto; padding: 20px; scrollbar-width: none; }
+        .image-gallery::-webkit-scrollbar { display: none; }
+        .image-track { display: flex; flex-direction: column; gap: 15px; }
+        .image-gallery img { width: 100%; height: auto; max-height: 300px; object-fit: cover; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.5); }
+
+        .info-section { flex: 1 1 60%; padding: 30px; }
+        .info-section h1 { font-size: 32px; margin-bottom: 10px; color: #fff; }
+        .info-section h1:hover { color: #8b5cf6; }
+        .info-section p { font-size: 18px; margin: 8px 0; color: #ccc; }
+
+        .checkbox-group { margin-top: 15px; }
+        .checkbox-group label { display: block; margin-bottom: 10px; font-size: 16px; }
+        .checkbox-group input { margin-right: 10px; accent-color: #8b5cf6; }
+        .checkbox-group.disabled label { color: #888; cursor: not-allowed; }
+
+        .total-price { margin-top: 10px; font-size: 18px; font-weight: bold; color: #8b5cf6; }
+        .advance-payment { font-size: 16px; font-weight: bold; color: #ffcc00; margin-top: 5px; }
+
+        .event-buttons { margin-top: 30px; display: flex; gap: 20px; }
+        .event-buttons button, .event-buttons a { padding: 12px 24px; background-color: #8b5cf6; color: white; font-weight: bold; border-radius: 6px; text-decoration: none; box-shadow: 0 0 15px #8b5cf6; transition: 0.3s ease; border: none; cursor: pointer; }
+        .event-buttons button:hover, .event-buttons a:hover { box-shadow: 0 0 25px #8b5cf6; }
+
+        .already-booked { margin-top: 30px; font-size: 18px; font-weight: bold; color: #10b981; }
+        .footer { padding: 20px; text-align: center; background-color: #1e1e1e; color: #aaa; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-hands-praying"></i>
+        <span>Sangam</span>
+    </div>
+    <nav class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/events}">Events</a>
+        <a th:href="@{/about}">About</a>
+        <a th:href="@{/contact}">Contact</a>
+    </nav>
+</header>
+
+<!-- Main Section -->
+<div class="main-container">
+
+    <!-- Left: Scrollable Images -->
+    <div class="image-gallery">
+        <div class="image-track">
+            <img th:src="@{${event.imageUrl}}" th:alt="${event.name}"/>
+        </div>
+    </div>
+
+    <!-- Right: Event Info -->
+    <div class="info-section">
+        <h1 th:text="${event.name}">Event Name</h1>
+        <p><strong>Description:</strong> <span th:text="${event.description}"></span></p>
+        <p><strong>Date:</strong> <span th:text="${event.date}"></span></p>
+        <p><strong>Time:</strong> <span th:text="${event.time}"></span></p>
+        <p><strong>Location:</strong> <span th:text="${event.location}"></span></p>
+        <p><strong>Address:</strong> <span th:text="${event.address}"></span></p>
+        <p><strong>Category:</strong> <span th:text="${event.category}"></span></p>
+        <p><strong>Capacity:</strong> <span th:text="${event.capacity}"></span></p>
+        <p><strong>Decoration Charges:</strong> ₹<span th:text="${event.decorationPrice}"></span></p>
+
+        <!-- Price Options -->
+        <div class="checkbox-group" th:classappend="${userBooking != null and (userBooking.status == 'Pending' or userBooking.status == 'Confirmed')} ? ' disabled'">
+            <label>
+                <input type="checkbox" id="vegPrice" th:value="${event.vegPrice}"
+                       th:disabled="${userBooking != null and (userBooking.status == 'Pending' or userBooking.status == 'Confirmed')}">
+                Veg Price: ₹<span th:text="${event.vegPrice}"></span>
+            </label>
+            <label>
+                <input type="checkbox" id="nonVegPrice" th:value="${event.nonvegPrice}"
+                       th:disabled="${userBooking != null and (userBooking.status == 'Pending' or userBooking.status == 'Confirmed')}">
+                Non-Veg Price: ₹<span th:text="${event.nonvegPrice}"></span>
+            </label>
+        </div>
+
+        <!-- Price Summary -->
+        <div class="total-price" id="totalPrice"
+             th:text="${userBooking != null and (userBooking.status == 'Pending' or userBooking.status == 'Confirmed')} ? 'Total Price: ---' : 'Total Price: ₹0'">Total Price: ₹0</div>
+        <div class="advance-payment" id="advancePayment"
+             th:text="${userBooking != null and (userBooking.status == 'Pending' or userBooking.status == 'Confirmed')} ? 'Advance Payment (10% Online): ---' : 'Advance Payment (10% Online): ₹0'">Advance Payment (10% Online): ₹0</div>
+
+        <!-- Booking Form / Already Booked Message -->
+        <div class="event-buttons">
+
+            <!-- Case 1: If ANY booking exists (globalBooking != null) -->
+            <div th:if="${globalBooking != null}" class="already-booked">
+                This hotel is already booked
+                <span th:if="${userBooking != null}">by you</span>
+                <span th:if="${userBooking == null}">by another user</span>.
+                Status: <span th:text="${globalBooking.status}"></span>
+            </div>
+
+            <!-- Case 2: If no booking exists yet -->
+            <form th:if="${globalBooking == null}"
+                  th:action="@{/event/{id}/book(id=${event.eventId})}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit">Book</button>
+            </form>
+
+            <a th:href="@{/events}">Go Back</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2025 Sangam. All rights reserved.</p>
+</footer>
+
+<!-- Script -->
+<script th:inline="javascript">
+    const vegCheckbox = document.getElementById('vegPrice');
+    const nonVegCheckbox = document.getElementById('nonVegPrice');
+    const totalPriceLabel = document.getElementById('totalPrice');
+    const advancePaymentLabel = document.getElementById('advancePayment');
+
+    const capacity = [[${event.capacity}]];
+    const decorationCharges = [[${event.decorationPrice}]];
+
+    function calculateTotal() {
+        if (!vegCheckbox || vegCheckbox.disabled) return; // stop calculation if booked
+        let total = 0;
+        if (vegCheckbox.checked) total += capacity * parseInt(vegCheckbox.value);
+        if (nonVegCheckbox.checked) total += capacity * parseInt(nonVegCheckbox.value);
+        if (vegCheckbox.checked || nonVegCheckbox.checked) total += decorationCharges;
+
+        totalPriceLabel.textContent = `Total Price: ₹${total.toLocaleString()}`;
+        advancePaymentLabel.textContent = `Advance Payment (10% Online): ₹${Math.round(total * 0.10).toLocaleString()}`;
+    }
+
+    if (vegCheckbox && !vegCheckbox.disabled) vegCheckbox.addEventListener('change', calculateTotal);
+    if (nonVegCheckbox && !nonVegCheckbox.disabled) nonVegCheckbox.addEventListener('change', calculateTotal);
+</script>
+
+</body>
+</html>

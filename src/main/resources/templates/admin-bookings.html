@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin | Booking Requests</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #161616;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #1e1e1e;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+            gap: 10px;
+            color: #8b5cf6;
+        }
+
+        .nav-links a {
+            color: white;
+            margin-left: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.5s;
+        }
+
+        .nav-links a:hover {
+            color: #8b5cf6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #252525;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.6);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #8b5cf6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        th {
+            background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(59,130,246,0.2));
+            color: #8b5cf6;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: rgba(139, 92, 246, 0.05);
+            transition: 0.3s;
+        }
+
+        .status {
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 6px;
+        }
+        .status.pending { color: #facc15; }
+        .status.confirmed { color: #10b981; }
+        .status.rejected { color: #ef4444; }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-approve, .btn-reject, .btn-delete {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: #ef4444;
+            font-size: 16px;
+        }
+
+        .btn-approve:hover {
+            box-shadow: 0 0 15px rgba(16,185,129,0.4);
+        }
+
+        .btn-reject:hover {
+            box-shadow: 0 0 15px rgba(239,68,68,0.4);
+        }
+
+        .btn-delete:hover {
+            color: #ff0000;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            background: #1e1e1e;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Admin Panel</span>
+    </div>
+    <nav class="nav-links">
+        <a th:href="@{/admin}">Dashboard</a>
+        <a th:href="@{/admin/requests}">Bookings</a>
+        <a th:href="@{/admin/venues}">Venues</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+
+</header>
+
+<!-- Container -->
+<div class="container">
+    <h1>Booking Requests</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>User</th>
+            <th>Email</th>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reg : ${registrations}">
+            <td th:text="${reg.registrationId}"></td>
+            <td th:text="${reg.user.name}"></td>
+            <td th:text="${reg.user.email}"></td>
+            <td th:text="${reg.event.name}"></td>
+            <td th:text="${#temporals.format(reg.registrationDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <span th:if="${reg.status == 'Pending'}" class="status pending" th:text="${reg.status}"></span>
+                <span th:if="${reg.status == 'Confirmed'}" class="status confirmed" th:text="${reg.status}"></span>
+                <span th:if="${reg.status == 'Rejected'}" class="status rejected" th:text="${reg.status}"></span>
+            </td>
+            <td class="actions">
+                <form th:if="${reg.status != 'Confirmed'}" th:action="@{/admin/requests/{id}/status(id=${reg.registrationId})}" method="post" style="display:inline;">
+                    <input type="hidden" name="status" value="Confirmed"/>
+                    <button type="submit" class="btn-approve">Approve</button>
+                </form>
+
+                <form th:if="${reg.status != 'Rejected'}" th:action="@{/admin/requests/{id}/status(id=${reg.registrationId})}" method="post" style="display:inline;">
+                    <input type="hidden" name="status" value="Rejected"/>
+                    <button type="submit" class="btn-reject">Reject</button>
+                </form>
+
+                <form th:if="${reg.status == 'Rejected'}" th:action="@{/admin/requests/{id}/delete(id=${reg.registrationId})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn-delete"><i class="fa-solid fa-trash"></i></button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2025 Sangam. Admin Panel</p>
+</footer>
+
+</body>
+</html>

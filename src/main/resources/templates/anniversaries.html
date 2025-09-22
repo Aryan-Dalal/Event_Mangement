@@ -2,110 +2,193 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Sangam | Anniversaries</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/venues.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        .card p {
-          margin: 5px 0;
-          color: #ccc;
-        }
-
-        .card button {
-          margin-top: 10px;
-          padding: 10px 16px;
-          background-color: #8b5cf6;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          font-weight: bold;
-          cursor: pointer;
-          transition: 0.3s ease;
-        }
-
-        .card button:hover {
-          box-shadow: 0 0 12px #8b5cf6;
-        }
-
-        .dropdown {
-          position: relative;
-          display: inline-block;
-        }
-
-        .dropdown-btn {
-          background: none;
-          border: none;
-          color: white;
-          font-size: 16px;
-          cursor: pointer;
-          padding: 8px 16px;
-        }
-
-        .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #1e1e1e;
-          box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
-          z-index: 1;
-          min-width: 160px;
-        }
-
-        .dropdown-content a {
-          color: white;
-          padding: 10px 16px;
-          text-decoration: none;
-          display: block;
-        }
-
-        .dropdown-content a:hover {
-          background-color: #333;
-        }
-
-        .dropdown:hover .dropdown-content {
-          display: block;
-        }
-    </style>
 </head>
 <body>
 
-<header class="navbar">
-    <div class="logo"><i class="fa-solid fa-hands-praying"></i> <span>Sangam</span></div>
-    <nav class="nav-links">
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/events}">Events</a>
-        <a th:href="@{/about}">About</a>
-        <a th:href="@{/contact}">Contact</a>
+<!-- Animated background elements -->
+<div class="background-elements">
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+    <div class="bg-element bg-element-4"></div>
+</div>
 
-        <!-- Location Dropdown -->
-        <div class="dropdown">
-            <button class="dropdown-btn">Location <i class="fa fa-caret-down"></i> </button>
-            <div class="dropdown-content">
-                <a th:href="@{/anniversaries/location/Mumbai}">Mumbai</a>
-                <a th:href="@{/anniversaries/location/Thane}">Thane</a>
-                <a th:href="@{/anniversaries/location/Pune}">Pune</a>
+<header class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-hands-praying"></i>
             </div>
+            <span class="logo-text">Sangam</span>
         </div>
-    </nav>
+        <nav class="nav-links">
+            <a href="/" th:href="@{/}" class="nav-link">Home</a>
+            <a href="/events" th:href="@{/events}" class="nav-link">Events</a>
+            <a href="/about" th:href="@{/about}" class="nav-link">About</a>
+            <a href="/contact" th:href="@{/contact}" class="nav-link">Contact</a>
+
+            <!-- Enhanced Location Dropdown -->
+            <div class="dropdown">
+                <button class="dropdown-btn">
+                    <i class="fa-solid fa-map-pin"></i>
+                    <span>Location</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a th:href="@{/anniversaries/location/Mumbai}">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Mumbai
+                    </a>
+                    <a th:href="@{/anniversaries/location/Thane}">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Thane
+                    </a>
+                    <a th:href="@{/anniversaries/location/Pune}">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Pune
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
 </header>
 
-<section class="content-section">
-    <h1>Anniversary Celebration Venues</h1>
-    <div class="card-container">
+<!-- Enhanced Hero Section -->
+<section class="page-hero">
+    <div class="hero-content">
+        <div class="hero-badge anniversary">
+            <i class="fa-regular fa-face-laugh-wink"></i>
+            <span>Anniversary Celebrations</span>
+        </div>
+        <h1 class="hero-title">Anniversary Venues</h1>
+        <p class="hero-subtitle">Mark your special milestones with a romantic and unforgettable celebration</p>
+    </div>
+    <div class="hero-decoration">
+        <div class="floating-element floating-1"></div>
+        <div class="floating-element floating-2"></div>
+        <div class="floating-element floating-3"></div>
+    </div>
+</section>
 
-        <div class="card" th:each="event : ${anniversaryEvents}">
-            <img th:src="@{${event.imageUrl}}" alt="Anniversary Venue"/>
-            <h2 th:text="${event.name}"></h2>
-            <p><strong>Description:</strong> <span th:text="${event.description}"></span></p>
-            <p><strong>Location:</strong> <span th:text="${event.location}"></span></p>
-            <br>
-            <a th:href="@{'/event/' + ${event.eventId}}"><button>View Details</button></a>
+<!-- Enhanced Content Section -->
+<section class="content-section">
+    <!-- Background gradient -->
+    <div class="section-background"></div>
+
+    <div class="section-container">
+        <!-- Enhanced Section Header -->
+        <div class="section-header">
+            <div class="section-badge">
+                <i class="fa-regular fa-face-laugh-wink"></i>
+                <span>Available Venues</span>
+            </div>
+
+            <h2 class="section-title">Choose Your Romantic Venue</h2>
+
+            <div class="section-line"></div>
+
+            <p class="section-subtitle">
+                Discover romantic anniversary venues that will make your milestone celebration truly special
+            </p>
         </div>
 
+        <!-- Enhanced Venue Cards Grid -->
+        <div class="card-container">
+            <div class="card" th:each="event : ${anniversaryEvents}">
+                <div class="card-glow"></div>
+
+                <div class="card-image">
+                    <img th:src="@{${event.imageUrl}}" alt="Anniversary Venue"/>
+
+                    <div class="card-overlay"></div>
+                    <div class="card-color-overlay purple"></div>
+
+                    <div class="category-badge purple">
+                        <i class="fa-regular fa-face-laugh-wink"></i>
+                        <span>Anniversary</span>
+                    </div>
+
+                    <div class="icon-corner">
+                        <i class="fa-regular fa-face-laugh-wink"></i>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3 class="card-title" th:text="${event.name}">Venue Name</h3>
+
+                    <p class="card-description" th:text="${event.description}">
+                        Venue description will appear here
+                    </p>
+
+                    <div class="venue-info-section">
+                        <div class="location-info">
+                            <i class="fa-solid fa-map-pin"></i>
+                            <span th:text="${event.location}">Location</span>
+                        </div>
+                    </div>
+
+                    <div class="features-list">
+            <span class="feature-tag">
+              <div class="feature-dot"></div>
+              Romantic Ambiance
+            </span>
+                        <span class="feature-tag">
+              <div class="feature-dot"></div>
+              Fine Dining
+            </span>
+                        <span class="feature-tag">
+              <div class="feature-dot"></div>
+              Memory Books
+            </span>
+                    </div>
+
+                    <div class="card-bottom">
+                        <div class="card-info">
+                            <div class="info-item">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>Quick Setup</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-heart"></i>
+                                <span>Romantic</span>
+                            </div>
+                        </div>
+
+                        <a th:href="@{/event/{id}(id=${event.eventId})}" class="view-details-btn">
+                            <span>View Details</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced CTA section -->
+        <div class="cta-section">
+            <div class="cta-container">
+                <h3 class="cta-title">
+                    Celebrating a Special Anniversary?
+                </h3>
+                <p class="cta-description">
+                    We create romantic, memorable anniversary celebrations with elegant ambiance, fine dining, and personalized touches for your special milestone.
+                </p>
+                <a href="/contact" th:href="@{/contact}" class="cta-btn">
+                    <i class="fa-regular fa-face-laugh-wink"></i>
+                    Plan Anniversary Celebration
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 
 <footer class="footer">
-    <p>&copy; 2025 Sangam. All rights reserved.</p>
+    <div class="footer-content">
+        <p>&copy; 2025 Sangam. All rights reserved.</p>
+    </div>
 </footer>
 
 </body>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Booking Success | Sangam</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .success-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .success-container i {
+      font-size: 80px;
+      color: #8b5cf6;
+      margin-bottom: 20px;
+    }
+    .success-container h1 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+    .success-container p {
+      color: #ccc;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+    .success-container a {
+      padding: 12px 20px;
+      background-color: #8b5cf6;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .success-container a:hover {
+      box-shadow: 0 0 12px #8b5cf6;
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo"><i class="fa-solid fa-hands-praying"></i> <span>Sangam</span></div>
+  <nav class="nav-links">
+    <a th:href="@{/}">Home</a>
+    <a th:href="@{/events}">Events</a>
+    <a th:href="@{/about}">About</a>
+    <a th:href="@{/contact}">Contact</a>
+  </nav>
+</header>
+
+<section class="success-container">
+  <i class="fa-solid fa-circle-check"></i>
+  <h1>Booking Request Submitted!</h1>
+  <p>Your request has been sent successfully and is pending admin approval.</p>
+  <a th:href="@{/events}">Back to Events</a>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2025 Sangam. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

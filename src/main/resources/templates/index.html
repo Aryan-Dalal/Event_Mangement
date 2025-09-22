@@ -4,71 +4,352 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Sangam | Event Management</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/home-style.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        .card:hover {
-          cursor: pointer;
-          box-shadow: 0 0 15px #8b5cf6;
-        }
-    </style>
 </head>
 <body>
 
+<!-- Animated background elements -->
+<div class="background-elements">
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+    <div class="bg-element bg-element-4"></div>
+</div>
+
 <header class="navbar">
-    <div class="logo">
-        <i class="fa-solid fa-hands-praying"></i>
-        <span>Sangam</span>
+    <div class="nav-container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-hands-praying"></i>
+            </div>
+            <span class="logo-text">Sangam</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" th:href="@{/}" class="nav-link active">Home</a>
+            <a href="/events" th:href="@{/events}" class="nav-link">Events</a>
+            <a href="/about" th:href="@{/about}" class="nav-link">About</a>
+            <a href="/contact" th:href="@{/contact}" class="nav-link">Contact</a>
+        </nav>
     </div>
-    <nav class="nav-links">
-        <a href="/" th:href="@{/}">Home</a>
-        <a href="/events" th:href="@{/events}">Events</a>
-        <a href="/about" th:href="@{/about}">About</a>
-        <a href="/contact" th:href="@{/contact}">Contact</a>
-    </nav>
 </header>
 
 <section class="hero">
-    <h1>Welcome to Sangam</h1>
-    <p>Celebrate, Connect & Create Unforgettable Memories</p>
-    <a href="#services" class="btn">Explore Events</a>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fa-solid fa-hands-praying"></i>
+            <span>Premium Event Management</span>
+        </div>
+        <h1 class="hero-title">Welcome to Sangam</h1>
+        <p class="hero-subtitle">Celebrate, Connect & Create Unforgettable Memories</p>
+        <a href="#services" class="hero-btn">
+            <span>Explore Events</span>
+            <i class="fa-solid fa-arrow-right"></i>
+            <div class="btn-shine"></div>
+        </a>
+    </div>
+    <div class="hero-decoration">
+        <div class="floating-element floating-1"></div>
+        <div class="floating-element floating-2"></div>
+        <div class="floating-element floating-3"></div>
+    </div>
 </section>
 
-<!-- EVENT TYPE CARDS SECTION -->
+<!-- ENHANCED EVENT TYPE CARDS SECTION -->
 <section class="content-section" id="services">
-    <h1>Our Event Services</h1>
-    <div class="card-container">
+    <!-- Background gradient -->
+    <div class="section-background"></div>
 
-        <a href="/wedding-venues" class="card">
-            <img src="images/Wedding_Venue.png" alt="Wedding Venues">
-            <h2>Wedding Venue</h2>
-            <p>We organize beautiful, elegant weddings with stunning venues and custom themes.</p>
-        </a>
+    <div class="section-container">
+        <!-- Enhanced Section Header -->
+        <div class="section-header">
+            <div class="section-badge">
+                <i class="fa-solid fa-hands-praying"></i>
+                <span>Premium Services</span>
+            </div>
 
-        <!-- Static cards -->
-        <a href="/family-gatherings" class="card">
-            <img src="images/Family_Gatherings.png" alt="Family Gatherings">
-            <h2>Family Gatherings</h2>
-            <p>Celebrate precious moments with your loved ones in a warm, vibrant setting.</p>
-        </a>
+            <h2 class="section-title">Our Event Services</h2>
 
-        <a href="/birthday-parties" class="card">
-            <img src="images/Birthday_Venue.png" alt="Birthday Parties">
-            <h2>Birthday Parties</h2>
-            <p>Fun-filled, themed birthday parties for all ages, tailored to your needs.</p>
-        </a>
+            <div class="section-line"></div>
 
-        <a href="/anniversaries" class="card">
-            <img src="images/Anniversaries.png" alt="Anniversaries">
-            <h2>Anniversaries</h2>
-            <p>Mark your special milestones with a romantic and unforgettable celebration.</p>
-        </a>
+            <p class="section-subtitle">
+                From intimate gatherings to grand celebrations, we craft unforgettable experiences tailored to your vision
+            </p>
+        </div>
 
+        <!-- Enhanced Service Cards Grid -->
+        <div class="card-container">
+            <!-- Wedding Venues Card -->
+            <a href="/wedding-venues" th:href="@{/wedding-venues}" class="card" data-category="ceremonies">
+                <div class="card-glow"></div>
+
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1738669469714-56aace3182a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd2VkZGluZyUyMHZlbnVlJTIwZGVjb3JhdGlvbnxlbnwxfHx8fDE3NTc5NDY2NzZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Wedding Venues">
+
+                    <div class="card-overlay"></div>
+                    <div class="card-color-overlay rose"></div>
+
+                    <div class="category-badge rose">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Ceremonies</span>
+                    </div>
+
+                    <div class="icon-corner">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3 class="card-title">Wedding Venues</h3>
+
+                    <p class="card-description">
+                        We organize beautiful, elegant weddings with stunning venues and custom themes.
+                    </p>
+
+                    <div class="features-list">
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Custom Decorations
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Professional Photography
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Catering Services
+                        </span>
+                    </div>
+
+                    <div class="card-bottom">
+                        <div class="card-info">
+                            <div class="info-item">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>Quick Setup</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-map-pin"></i>
+                                <span>Any Location</span>
+                            </div>
+                        </div>
+
+                        <div class="explore-btn">
+                            <span>Explore</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Family Gatherings Card -->
+            <a href="/family-gatherings" th:href="@{/family-gatherings}" class="card" data-category="social">
+                <div class="card-glow"></div>
+
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1722252799088-4781aabc3d0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW1pbHklMjBnYXRoZXJpbmclMjBjZWxlYnJhdGlvbnxlbnwxfHx8fDE3NTc5MzUyMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Family Gatherings">
+
+                    <div class="card-overlay"></div>
+                    <div class="card-color-overlay blue"></div>
+
+                    <div class="category-badge blue">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Social Events</span>
+                    </div>
+
+                    <div class="icon-corner">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3 class="card-title">Family Gatherings</h3>
+
+                    <p class="card-description">
+                        Celebrate precious moments with your loved ones in a warm, vibrant setting.
+                    </p>
+
+                    <div class="features-list">
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Intimate Settings
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Home-style Catering
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Memory Capture
+                        </span>
+                    </div>
+
+                    <div class="card-bottom">
+                        <div class="card-info">
+                            <div class="info-item">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>Quick Setup</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-map-pin"></i>
+                                <span>Any Location</span>
+                            </div>
+                        </div>
+
+                        <div class="explore-btn">
+                            <span>Explore</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Birthday Parties Card -->
+            <a href="/birthday-parties" th:href="@{/birthday-parties}" class="card" data-category="celebrations">
+                <div class="card-glow"></div>
+
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1650584997985-e713a869ee77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiaXJ0aGRheSUyMHBhcnR5JTIwY2VsZWJyYXRpb258ZW58MXx8fHwxNzU3ODUzOTU4fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Birthday Parties">
+
+                    <div class="card-overlay"></div>
+                    <div class="card-color-overlay amber"></div>
+
+                    <div class="category-badge amber">
+                        <i class="fa-solid fa-cake-candles"></i>
+                        <span>Celebrations</span>
+                    </div>
+
+                    <div class="icon-corner">
+                        <i class="fa-solid fa-cake-candles"></i>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3 class="card-title">Birthday Parties</h3>
+
+                    <p class="card-description">
+                        Fun-filled, themed birthday parties for all ages, tailored to your needs.
+                    </p>
+
+                    <div class="features-list">
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Theme Parties
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Entertainment
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Custom Cakes
+                        </span>
+                    </div>
+
+                    <div class="card-bottom">
+                        <div class="card-info">
+                            <div class="info-item">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>Quick Setup</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-map-pin"></i>
+                                <span>Any Location</span>
+                            </div>
+                        </div>
+
+                        <div class="explore-btn">
+                            <span>Explore</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Anniversaries Card -->
+            <a href="/anniversaries" th:href="@{/anniversaries}" class="card" data-category="romantic">
+                <div class="card-glow"></div>
+
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1623940507596-9b2befeb41c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhbm5pdmVyc2FyeSUyMGNlbGVicmF0aW9uJTIwcm9tYW50aWN8ZW58MXx8fHwxNzU3OTQ2Njc3fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Anniversaries">
+
+                    <div class="card-overlay"></div>
+                    <div class="card-color-overlay purple"></div>
+
+                    <div class="category-badge purple">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Romantic</span>
+                    </div>
+
+                    <div class="icon-corner">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3 class="card-title">Anniversaries</h3>
+
+                    <p class="card-description">
+                        Mark your special milestones with a romantic and unforgettable celebration.
+                    </p>
+
+                    <div class="features-list">
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Romantic Ambiance
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Fine Dining
+                        </span>
+                        <span class="feature-tag">
+                            <div class="feature-dot"></div>
+                            Memory Books
+                        </span>
+                    </div>
+
+                    <div class="card-bottom">
+                        <div class="card-info">
+                            <div class="info-item">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>Quick Setup</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-map-pin"></i>
+                                <span>Any Location</span>
+                            </div>
+                        </div>
+
+                        <div class="explore-btn">
+                            <span>Explore</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Enhanced CTA section -->
+        <div class="cta-section">
+            <div class="cta-container">
+                <h3 class="cta-title">
+                    Don't see what you're looking for?
+                </h3>
+                <p class="cta-description">
+                    We specialize in custom events and unique celebrations. Let's discuss your vision!
+                </p>
+                <a href="/contact" th:href="@{/contact}" class="cta-btn">
+                    <i class="fa-solid fa-camera"></i>
+                    Plan Custom Event
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 
 <footer class="footer">
-    <p>&copy; 2025 Sangam. All rights reserved.</p>
+    <div class="footer-content">
+        <p>&copy; 2025 Sangam. All rights reserved.</p>
+    </div>
 </footer>
 
 </body>
