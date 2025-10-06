@@ -25,9 +25,6 @@ public class Event {
     @Column(name="description")
     private String description;
 
-    @Column(name="date")
-    private LocalDate date;
-
     @Column(name="time")
     private LocalTime time;
 

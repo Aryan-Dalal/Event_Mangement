@@ -6,13 +6,18 @@ import com.example.eventManagement.entity.User;
 import com.example.eventManagement.repository.EventRepository;
 import com.example.eventManagement.repository.RegistrationRepository;
 import com.example.eventManagement.repository.UserRepository;
+import com.example.eventManagement.service.EmailService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -21,18 +26,26 @@ public class BookingController {
 
     @Autowired
     private EventRepository eventRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RegistrationRepository registrationRepository;
 
-    // ----------------- USER SIDE -----------------
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    // Show event details for the currently logged-in user
+    @Autowired
+    private EmailService emailService;
+
+    // ----------------- USER SIDE -----------------
     @GetMapping("/event/{eventId}")
     public String getEventDetail(@PathVariable("eventId") Integer eventId,
                                  Model model,
-                                 Authentication authentication) {
+                                 Authentication authentication,
+                                 @ModelAttribute("errorMessage") String errorMessage,
+                                 @ModelAttribute("successMessage") String successMessage) throws JsonProcessingException {
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Event ID: " + eventId));
@@ -40,24 +53,36 @@ public class BookingController {
         User currentUser = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Current user's booking
         Registration userBooking = getUserBooking(event, currentUser);
 
-        // Check if ANY booking exists for this event
-        Registration globalBooking = registrationRepository.findFirstByEvent(event).orElse(null);
+        List<Registration> bookedDates = registrationRepository.findByEvent(event);
+
+        String bookedDatesJson = objectMapper.writeValueAsString(
+                bookedDates.stream()
+                        .map(r -> new DateRange(r.getStartDate(), r.getEndDate()))
+                        .toList()
+        );
 
         model.addAttribute("event", event);
         model.addAttribute("userBooking", userBooking);
-        model.addAttribute("globalBooking", globalBooking); // 🔑 this tells if event is booked
+        model.addAttribute("bookedDatesJson", bookedDatesJson);
+        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("successMessage", successMessage);
 
         return "event-detail";
     }
 
-
-    // Book event for currently logged-in user
     @PostMapping("/event/{eventId}/book")
     public String bookEvent(@PathVariable("eventId") int eventId,
-                            Authentication authentication) {
+                            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                            @RequestParam("vegSelected") boolean vegSelected,
+                            @RequestParam("nonvegSelected") boolean nonvegSelected,
+                            @RequestParam("vegPrice") double vegPrice,
+                            @RequestParam("nonvegPrice") double nonvegPrice,
+                            @RequestParam("totalPrice") double totalPrice,
+                            Authentication authentication,
+                            RedirectAttributes redirectAttributes) {
 
         User currentUser = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -65,72 +90,109 @@ public class BookingController {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Event ID: " + eventId));
 
-        // Prevent double booking
+        // Check if already booked
         if (registrationRepository.findByUserAndEvent(currentUser, event).isPresent()) {
-            return "redirect:/bookings/already"; // page saying "You have already booked"
+            redirectAttributes.addFlashAttribute("errorMessage", "You have already booked this event.");
+            return "redirect:/event/" + eventId;
         }
 
+        // Check overlapping dates
+        List<Registration> existingBookings = registrationRepository.findByEvent(event);
+        for (Registration r : existingBookings) {
+            if (!(endDate.isBefore(r.getStartDate()) || startDate.isAfter(r.getEndDate()))) {
+                redirectAttributes.addFlashAttribute("errorMessage", "The selected dates overlap with an existing booking.");
+                return "redirect:/event/" + eventId;
+            }
+        }
+
+        // Save registration with new fields
         Registration registration = new Registration();
         registration.setUser(currentUser);
         registration.setEvent(event);
         registration.setStatus("Pending");
-        registration.setRegistrationDate(LocalDateTime.now());
+        registration.setStartDate(startDate);
+        registration.setEndDate(endDate);
+
+        // New price fields
+        registration.setVegSelected(vegSelected);
+        registration.setNonvegSelected(nonvegSelected);
+        registration.setVegPrice(vegPrice);
+        registration.setNonvegPrice(nonvegPrice);
+        registration.setTotalPrice(totalPrice);
 
         registrationRepository.save(registration);
 
-        return "redirect:/bookings/success";
+        redirectAttributes.addFlashAttribute("successMessage", "Booking successful!");
+        return "redirect:/event/" + eventId;
     }
 
-    // Booking success page
+    // ----------------- Booking Pages -----------------
     @GetMapping("/bookings/success")
-    public String bookingSuccess() {
-        return "booking-success";
-    }
+    public String bookingSuccess() { return "booking-success"; }
 
-    // Already booked page
     @GetMapping("/bookings/already")
-    public String bookingAlready() {
-        return "booking-already";
-    }
+    public String bookingAlready() { return "booking-already"; }
+
+    @GetMapping("/bookings/overlap")
+    public String bookingOverlap() { return "booking-overlap"; }
 
     // ----------------- ADMIN SIDE -----------------
-
-    // Admin: show all booking requests
     @GetMapping("/admin/requests")
     public String showAllBookings(Model model) {
-        List<Registration> registrations = registrationRepository.findAllByOrderByRegistrationDateDesc();
+        List<Registration> registrations = registrationRepository.findAllByOrderByStartDateDesc();
         model.addAttribute("registrations", registrations);
         return "admin-bookings";
     }
 
-    // Admin: approve or reject booking
+    // ----------------- UPDATE STATUS & SEND EMAIL -----------------
     @PostMapping("/admin/requests/{registrationId}/status")
     public String updateBookingStatus(@PathVariable("registrationId") int registrationId,
-                                      @RequestParam("status") String status) {
+                                      @RequestParam("status") String status,
+                                      RedirectAttributes redirectAttributes) {
 
         Registration registration = registrationRepository.findById(registrationId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Booking ID: " + registrationId));
 
+        // Normalize status
+        status = status.trim();
         registration.setStatus(status);
         registrationRepository.save(registration);
 
-        return "redirect:/admin/requests";
-    }
+        try {
+            if ("Confirmed".equalsIgnoreCase(status)) {
+                emailService.sendApprovalEmail(registration);
+                redirectAttributes.addFlashAttribute("successMessage", "Booking approved and email sent successfully ✅");
+                System.out.println("✅ Approval process completed for registration ID: " + registrationId);
 
-    // Admin: delete rejected booking
-    @PostMapping("/admin/requests/{registrationId}/delete")
-    public String deleteRejectedBooking(@PathVariable("registrationId") int registrationId) {
-        Registration registration = registrationRepository.findById(registrationId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Booking ID: " + registrationId));
+            } else if ("Rejected".equalsIgnoreCase(status)) {
+                emailService.sendRejectionEmail(registration);
+                redirectAttributes.addFlashAttribute("successMessage", "Booking rejected and email sent successfully ❌");
+                System.out.println("❌ Rejection process completed for registration ID: " + registrationId);
 
-        if ("Rejected".equals(registration.getStatus())) {
-            registrationRepository.delete(registration);
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Unknown status: " + status);
+                System.err.println("⚠️ Unknown status attempted: " + status);
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Booking status updated but email failed: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return "redirect:/admin/requests";
     }
 
-    // Admin: view a specific user's booking for an event (safe)
+    @PostMapping("/admin/requests/{registrationId}/delete")
+    public String deleteRejectedBooking(@PathVariable("registrationId") int registrationId,
+                                        RedirectAttributes redirectAttributes) {
+        Registration registration = registrationRepository.findById(registrationId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Booking ID: " + registrationId));
+        if ("Rejected".equalsIgnoreCase(registration.getStatus())) {
+            registrationRepository.delete(registration);
+            redirectAttributes.addFlashAttribute("successMessage", "Rejected booking deleted successfully 🗑️");
+        }
+        return "redirect:/admin/requests";
+    }
+
     @GetMapping("/admin/event/{eventId}/user/{userId}")
     public String getEventDetailForUser(@PathVariable("eventId") int eventId,
                                         @PathVariable("userId") int userId,
@@ -138,7 +200,6 @@ public class BookingController {
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Event ID: " + eventId));
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid User ID: " + userId));
 
@@ -148,11 +209,14 @@ public class BookingController {
         model.addAttribute("userBooking", userBooking);
         model.addAttribute("viewedUser", user);
 
-        return "admin-event-detail"; // create a Thymeleaf page for admin view
+        return "admin-event-detail";
     }
 
     // ----------------- HELPER -----------------
     private Registration getUserBooking(Event event, User user) {
         return registrationRepository.findByUserAndEvent(user, event).orElse(null);
     }
+
+    // ----------------- HELPER DTO -----------------
+    private record DateRange(LocalDate from, LocalDate to) {}
 }

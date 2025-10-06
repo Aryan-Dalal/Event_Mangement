@@ -159,7 +159,6 @@
         <a th:href="@{/admin/venues}">Venues</a>
         <a th:href="@{/logout}">Logout</a>
     </nav>
-
 </header>
 
 <!-- Container -->
@@ -184,7 +183,12 @@
             <td th:text="${reg.user.name}"></td>
             <td th:text="${reg.user.email}"></td>
             <td th:text="${reg.event.name}"></td>
-            <td th:text="${#temporals.format(reg.registrationDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <!-- Updated date display using startDate and endDate -->
+            <td>
+                <span th:text="${#temporals.format(reg.startDate, 'yyyy-MM-dd')}"></span>
+                <span> to </span>
+                <span th:text="${#temporals.format(reg.endDate, 'yyyy-MM-dd')}"></span>
+            </td>
             <td>
                 <span th:if="${reg.status == 'Pending'}" class="status pending" th:text="${reg.status}"></span>
                 <span th:if="${reg.status == 'Confirmed'}" class="status confirmed" th:text="${reg.status}"></span>

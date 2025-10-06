@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -26,9 +27,28 @@ public class Registration {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(name = "registration_date")
-    private LocalDateTime registrationDate;
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Column(name = "status")
     private String status; // e.g. Pending, Confirmed, Rejected
+
+    // -------------------- New Columns --------------------
+    @Column(name = "veg_selected")
+    private Boolean vegSelected = false;
+
+    @Column(name = "nonveg_selected")
+    private Boolean nonvegSelected = false;
+
+    @Column(name = "veg_price")
+    private Double vegPrice = 0.0;
+
+    @Column(name = "nonveg_price")
+    private Double nonvegPrice = 0.0;
+
+    @Column(name = "total_price")
+    private Double totalPrice = 0.0;
 }

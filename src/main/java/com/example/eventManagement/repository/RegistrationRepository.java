@@ -9,9 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface RegistrationRepository extends JpaRepository<Registration,Integer> {
-    List<Registration> findAllByOrderByRegistrationDateDesc();
-    //    Optional<Registration> findByEventAndUser(Event event, User user);
+    //List<Registration> findAllByOrderByRegistrationDateDesc();
+    //Optional<Registration> findByEventAndUser(Event event, User user);
+
+
     Optional<Registration> findByUserAndEvent(User user, Event event);
     Optional<Registration> findFirstByEvent(Event event);
-
+    List<Registration> findAllByOrderByStartDateDesc();
+    List<Registration> findByEvent(Event event);
 }
