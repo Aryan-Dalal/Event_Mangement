@@ -19,11 +19,11 @@ public class Registration {
     @Column(name = "registration_id")
     private int registrationId;
 
-    @ManyToOne(fetch = FetchType.EAGER)   // ✅ eager fetch so Thymeleaf gets data
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)   // ✅ eager fetch so Thymeleaf gets data
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
@@ -34,7 +34,7 @@ public class Registration {
     private LocalDate endDate;
 
     @Column(name = "status")
-    private String status; // e.g. Pending, Confirmed, Rejected
+    private String status; // Pending, Confirmed, Rejected
 
     // -------------------- New Columns --------------------
     @Column(name = "veg_selected")
@@ -51,4 +51,8 @@ public class Registration {
 
     @Column(name = "total_price")
     private Double totalPrice = 0.0;
+
+    // -------------------- Payment Column --------------------
+    @Column(name = "payment_status")
+    private String paymentStatus = "Pending";  // Default: Pending
 }

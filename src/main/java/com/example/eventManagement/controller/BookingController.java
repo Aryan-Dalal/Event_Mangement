@@ -109,11 +109,10 @@ public class BookingController {
         Registration registration = new Registration();
         registration.setUser(currentUser);
         registration.setEvent(event);
-        registration.setStatus("Pending");
+        registration.setStatus("Pending"); // IMPORTANT: status remains Pending
         registration.setStartDate(startDate);
         registration.setEndDate(endDate);
 
-        // New price fields
         registration.setVegSelected(vegSelected);
         registration.setNonvegSelected(nonvegSelected);
         registration.setVegPrice(vegPrice);
@@ -122,9 +121,48 @@ public class BookingController {
 
         registrationRepository.save(registration);
 
-        redirectAttributes.addFlashAttribute("successMessage", "Booking successful!");
-        return "redirect:/event/" + eventId;
+        // Redirect to payment page with registrationId
+        return "redirect:/payment/" + registration.getRegistrationId();
     }
+
+    // ----------------- PAYMENT PAGE -----------------
+    @GetMapping("/payment/{registrationId}")
+    public String showPaymentPage(@PathVariable("registrationId") int registrationId,
+                                  Model model,
+                                  @ModelAttribute("errorMessage") String errorMessage,
+                                  @ModelAttribute("successMessage") String successMessage) {
+
+        Registration registration = registrationRepository.findById(registrationId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Registration ID: " + registrationId));
+
+        model.addAttribute("registration", registration);
+        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("successMessage", successMessage);
+
+        return "payment";
+    }
+
+
+    // ----------------- PAYMENT CONFIRM -----------------
+    @PostMapping("/payment/confirm/{registrationId}")
+    public String confirmPayment(@PathVariable("registrationId") int registrationId,
+                                 RedirectAttributes redirectAttributes) {
+
+        Registration registration = registrationRepository.findById(registrationId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Registration ID: " + registrationId));
+
+        // Payment done, but status remains Pending
+        registrationRepository.save(registration);
+
+        // No email is sent
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Payment successful! ✅ Booking is pending approval.");
+
+        // Redirect back to event detail page showing Pending status
+        return "redirect:/event/" + registration.getEvent().getEventId();
+    }
+
+
 
     // ----------------- Booking Pages -----------------
     @GetMapping("/bookings/success")
@@ -153,7 +191,6 @@ public class BookingController {
         Registration registration = registrationRepository.findById(registrationId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Booking ID: " + registrationId));
 
-        // Normalize status
         status = status.trim();
         registration.setStatus(status);
         registrationRepository.save(registration);
@@ -162,16 +199,11 @@ public class BookingController {
             if ("Confirmed".equalsIgnoreCase(status)) {
                 emailService.sendApprovalEmail(registration);
                 redirectAttributes.addFlashAttribute("successMessage", "Booking approved and email sent successfully ✅");
-                System.out.println("✅ Approval process completed for registration ID: " + registrationId);
-
             } else if ("Rejected".equalsIgnoreCase(status)) {
                 emailService.sendRejectionEmail(registration);
                 redirectAttributes.addFlashAttribute("successMessage", "Booking rejected and email sent successfully ❌");
-                System.out.println("❌ Rejection process completed for registration ID: " + registrationId);
-
             } else {
                 redirectAttributes.addFlashAttribute("errorMessage", "Unknown status: " + status);
-                System.err.println("⚠️ Unknown status attempted: " + status);
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Booking status updated but email failed: " + e.getMessage());

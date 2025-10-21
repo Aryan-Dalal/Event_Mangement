@@ -21,5 +21,12 @@ public class DashboardController {
         model.addAttribute("events", events);
         return "index"; // this will map to index.html
     }
+
+    @GetMapping("/about")
+    public String aboutPage(Model model) {
+        // Add any dynamic info if needed in future
+        return "about";
+    }
+
 }
 

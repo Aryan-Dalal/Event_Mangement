@@ -12,7 +12,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    // ✅ Send approval email with emojis and price details
+    // ✅ Send approval email with clear formatting
     public void sendApprovalEmail(Registration registration) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(registration.getUser().getEmail());
@@ -31,29 +31,33 @@ public class EmailService {
 
         // ✅ Veg/Non-Veg and price info
         String vegInfo = registration.getVegSelected() != null && registration.getVegSelected()
-                ? "Veg Selected: ₹" + registration.getVegPrice()
-                : "Veg Not Selected";
+                ? "🥗 Veg Selected  : ₹" + registration.getVegPrice()
+                : "🥗 Veg Not Selected";
         String nonVegInfo = registration.getNonvegSelected() != null && registration.getNonvegSelected()
-                ? "Non-Veg Selected: ₹" + registration.getNonvegPrice()
-                : "Non-Veg Not Selected";
-        String totalPriceInfo = "Total Price: ₹" + registration.getTotalPrice();
+                ? "🍖 Non-Veg Selected : ₹" + registration.getNonvegPrice()
+                : "🍖 Non-Veg Not Selected";
+        String totalPriceInfo = "💰 Total Amount  : ₹" + registration.getTotalPrice();
 
         String body = String.format(
                 "👋 Hello %s,\n\n" +
-                        "Your booking for '%s' has been APPROVED! 🎊\n\n" +
-                        "📝 Booking Details:\n" +
-                        "----------------------------------------------------\n" +
-                        "🎟️ Booking ID: %d\n" +
-                        "📅 Dates: %s to %s\n" +
-                        "📍 Location: %s\n" +
-                        "🏢 Address: %s\n" +
-                        "🥗 %s\n" +
-                        "🍖 %s\n" +
-                        "💰 %s\n" +
-                        "----------------------------------------------------\n\n" +
-                        "We look forward to hosting you! 🤗\n\n" +
-                        "Warm regards,\n" +
-                        "The Sangam Events Team 💐\n" +
+                        "We are thrilled to inform you that your booking for the event:\n" +
+                        "✨ '%s' has been *APPROVED!* 🎊\n\n" +
+                        "──────────────────────────\n" +
+                        "📝  Booking Summary\n" +
+                        "──────────────────────────\n" +
+                        "🎟️  Booking ID   : %d\n" +
+                        "📅  Dates         : %s → %s\n" +
+                        "📍  Location      : %s\n" +
+                        "🏢  Address       : %s\n\n" +
+                        "🍽️  Food Preferences:\n" +
+                        "%s\n" +
+                        "%s\n\n" +
+                        "%s\n" +
+                        "──────────────────────────\n\n" +
+                        "🎉 We can’t wait to celebrate with you at the event!\n" +
+                        "Please make sure to carry your booking confirmation on the event day.\n\n" +
+                        "With warm regards,\n" +
+                        "🌸 *The Sangam Events Team*\n" +
                         "📧 sangamevents80@gmail.com\n" +
                         "🌐 www.sangamevents.com",
                 userName,
@@ -79,7 +83,7 @@ public class EmailService {
         }
     }
 
-    // ✅ Send rejection email (unchanged, can add veg info if needed)
+    // ✅ Send rejection email with reason and refund note
     public void sendRejectionEmail(Registration registration) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(registration.getUser().getEmail());
@@ -94,18 +98,25 @@ public class EmailService {
 
         String body = String.format(
                 "👋 Hello %s,\n\n" +
-                        "We’re sorry to inform you that your booking for '%s' has been rejected. ❌\n\n" +
-                        "📝 Booking Details:\n" +
-                        "----------------------------------------------------\n" +
-                        "🎟️ Booking ID: %d\n" +
-                        "📅 Dates: %s to %s\n" +
-                        "📍 Location: %s\n" +
-                        "🏢 Address: %s\n" +
-                        "----------------------------------------------------\n\n" +
-                        "Please try booking for different dates or contact our support team. 🤝\n\n" +
+                        "We regret to inform you that your booking for the event:\n" +
+                        "❌ '%s' could not be confirmed.\n\n" +
+                        "──────────────────────────\n" +
+                        "📝  Booking Details\n" +
+                        "──────────────────────────\n" +
+                        "🎟️  Booking ID   : %d\n" +
+                        "📅  Dates         : %s → %s\n" +
+                        "📍  Location      : %s\n" +
+                        "🏢  Address       : %s\n" +
+                        "──────────────────────────\n\n" +
+                        "💬 Reason for Rejection:\n" +
+                        "• The selected dates are fully booked, or the venue is unavailable for those dates.\n\n" +
+                        "💸 Refund Information:\n" +
+                        "• Any payment made will be refunded to your original payment method within 3–5 business days.\n\n" +
+                        "We sincerely apologize for the inconvenience and encourage you to try booking for alternative dates.\n\n" +
                         "Warm regards,\n" +
-                        "The Sangam Events Team 💐\n" +
-                        "📧 sangamevents80@gmail.com\n",
+                        "🌸 *The Sangam Events Team*\n" +
+                        "📧 sangamevents80@gmail.com\n" +
+                        "🌐 www.sangamevents.com",
                 userName,
                 eventName,
                 registration.getRegistrationId(),

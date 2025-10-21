@@ -16,38 +16,50 @@ import java.util.Set;
 @Configuration
 public class SecurityConfig {
 
+    // Configure user details service to read from the updated authorities table
     @Bean
     public UserDetailsService userDetailsService(DataSource dataSource) {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
+
+        // Query to get users
         manager.setUsersByUsernameQuery(
                 "SELECT email, password, true as enabled FROM users WHERE email = ?"
         );
+
+        // Query to get authorities/roles
         manager.setAuthoritiesByUsernameQuery(
                 "SELECT u.email, a.authority " +
                         "FROM authorities a " +
                         "INNER JOIN users u ON a.user_id = u.user_id " +
                         "WHERE u.email = ?"
         );
+
         return manager;
     }
 
+    // Password encoder bean
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Security filter chain configuration
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**", "/images/**").permitAll() // public
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // admin only
-                        .requestMatchers("/dashboard","/").authenticated() // must login to see dashboard
-                        .anyRequest().authenticated() // everything else also needs login
+                        // Public routes
+                        .requestMatchers("/login", "/register", "/css/**", "/images/**").permitAll()
+                        // Admin-only routes
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // Authenticated users
+                        .requestMatchers("/dashboard", "/").authenticated()
+                        // All others require authentication
+                        .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .successHandler(roleBasedRedirect()) // role-based redirection
+                        .successHandler(roleBasedRedirect()) // Role-based redirect
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll());
@@ -55,16 +67,15 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-    // Role-based redirection
+    // Role-based redirection after login
     @Bean
     public AuthenticationSuccessHandler roleBasedRedirect() {
         return (request, response, authentication) -> {
             Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
             if (roles.contains("ROLE_ADMIN")) {
-                response.sendRedirect("/admin"); // admin dashboard
+                response.sendRedirect("/admin");
             } else {
-                response.sendRedirect("/dashboard"); // user homepage
+                response.sendRedirect("/dashboard");
             }
         };
     }

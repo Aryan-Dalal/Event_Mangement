@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | Sangam Event</title>
+  <link rel="stylesheet" th:href="@{/css/about-style.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<!-- Animated background elements -->
+<div class="background-elements">
+  <div class="bg-element bg-element-1"></div>
+  <div class="bg-element bg-element-2"></div>
+  <div class="bg-element bg-element-3"></div>
+  <div class="bg-element bg-element-4"></div>
+</div>
+
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-hands-praying"></i>
+      </div>
+      <span class="logo-text">Sangam</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/" th:href="@{/}" class="nav-link">Home</a>
+      <a href="/events" th:href="@{/events}" class="nav-link">Events</a>
+      <a href="/about" th:href="@{/about}" class="nav-link active">About</a>
+      <a href="/contact" th:href="@{/contact}" class="nav-link">Contact</a>
+      <a th:href="@{/login}" class="nav-link">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">About Sangam Event Management</h1>
+    <p class="hero-subtitle">
+      Sangam Event Management is dedicated to creating unforgettable experiences.
+      From weddings and corporate events to birthdays and anniversaries, we bring your vision to life
+      with precision, creativity, and a personal touch.
+    </p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="section-container">
+
+    <!-- Mission Section -->
+    <div class="mission-section">
+      <h2>Our Mission</h2>
+      <p>
+        Our mission is to provide seamless event experiences that leave lasting memories.
+        We focus on customization, attention to detail, and a high level of professionalism
+        to make every event truly special.
+      </p>
+    </div>
+
+    <!-- Why Choose Us Section -->
+    <h2>Why Choose Us?</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fa-solid fa-star" style="color: #ff6f61;"></i>
+        </div>
+        <h3>Premium Quality</h3>
+        <p>High-quality event planning services that exceed expectations with meticulous attention to every detail.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fa-solid fa-users" style="color: #4e9af1;"></i>
+        </div>
+        <h3>Experienced Team</h3>
+        <p>Professional team with years of experience in event management, bringing expertise to every occasion.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fa-solid fa-heart" style="color: #f49ac2;"></i>
+        </div>
+        <h3>Personal Touch</h3>
+        <p>Customized events tailored to your style and preferences, making each celebration uniquely yours.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Sangam. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

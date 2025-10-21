@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment | Sangam Event</title>
+  <link rel="stylesheet" th:href="@{/css/payment-style.css}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+
+<!-- Animated background elements -->
+<div class="background-elements">
+  <div class="bg-element bg-element-1"></div>
+  <div class="bg-element bg-element-2"></div>
+  <div class="bg-element bg-element-3"></div>
+  <div class="bg-element bg-element-4"></div>
+</div>
+
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-hands-praying"></i>
+      </div>
+      <span class="logo-text">Sangam</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/" th:href="@{/}" class="nav-link">Home</a>
+      <a href="/events" th:href="@{/events}" class="nav-link">Events</a>
+      <a href="/about" th:href="@{/about}" class="nav-link">About</a>
+      <a href="/contact" th:href="@{/contact}" class="nav-link">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="payment-section">
+  <div class="payment-container">
+    <div class="payment-header">
+      <div class="payment-icon">
+        <i class="fa-solid fa-credit-card"></i>
+      </div>
+      <h1 class="payment-title">Complete Your Payment</h1>
+      <p class="payment-subtitle">Secure payment processing for your event booking</p>
+    </div>
+
+    <div class="payment-details">
+      <div class="detail-row event-name">
+        <div class="detail-label">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span>Event</span>
+        </div>
+        <div class="detail-value" th:text="${registration.event.name}">Event Name</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span>Start Date</span>
+        </div>
+        <div class="detail-value" th:text="${registration.startDate}">YYYY-MM-DD</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span>End Date</span>
+        </div>
+        <div class="detail-value" th:text="${registration.endDate}">YYYY-MM-DD</div>
+      </div>
+    </div>
+
+    <div class="price-breakdown">
+      <div class="price-row" th:if="${registration.vegSelected}">
+        <div class="detail-label">
+          <i class="fa-solid fa-leaf"></i>
+          <span>Vegetarian Menu</span>
+        </div>
+        <span class="price-value">₹<span th:text="${#numbers.formatDecimal(registration.vegPrice, 2, 2)}">0.00</span></span>
+      </div>
+
+      <div class="price-row" th:if="${registration.nonvegSelected}">
+        <div class="detail-label">
+          <i class="fa-solid fa-drumstick-bite"></i>
+          <span>Non-Vegetarian Menu</span>
+        </div>
+        <span class="price-value">₹<span th:text="${#numbers.formatDecimal(registration.nonvegPrice, 2, 2)}">0.00</span></span>
+      </div>
+
+      <div class="price-row">
+        <div class="detail-label">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Decoration Charges</span>
+        </div>
+        <span class="price-value">₹<span th:text="${#numbers.formatDecimal(registration.event.decorationPrice, 2, 2)}">0.00</span></span>
+      </div>
+
+      <div class="price-row total">
+        <span>Total Amount</span>
+        <span class="price-value">₹<span th:text="${#numbers.formatDecimal(registration.totalPrice, 2, 2)}">0.00</span></span>
+      </div>
+
+      <div class="price-row advance">
+        <span>Advance Payment (10%)</span>
+        <span class="price-value">₹<span th:text="${#numbers.formatDecimal(registration.totalPrice * 0.10, 2, 2)}">0.00</span></span>
+      </div>
+    </div>
+
+    <form method="post" th:action="@{/payment/confirm/{registrationId}(registrationId=${registration.registrationId})}" class="payment-form">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      <button type="submit" class="pay-button">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Pay Now</span>
+        <div class="btn-shine"></div>
+      </button>
+    </form>
+
+    <div class="security-badge">
+      <i class="fa-solid fa-lock"></i>
+      <span>Secure payment powered by encrypted gateway</span>
+    </div>
+  </div>
+</section>
+
+<!-- Flash Messages -->
+<div th:if="${errorMessage}" class="flash-message flash-error">
+  <i class="fa-solid fa-circle-exclamation"></i>
+  <span th:text="${errorMessage}">Error message</span>
+</div>
+<div th:if="${successMessage}" class="flash-message flash-success">
+  <i class="fa-solid fa-circle-check"></i>
+  <span th:text="${successMessage}">Success message</span>
+</div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Sangam. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  setTimeout(() => {
+      document.querySelectorAll('.flash-message').forEach(msg => {
+          msg.style.opacity = '0';
+          setTimeout(() => {
+              msg.style.display = 'none';
+          }, 300);
+      });
+  }, 5000);
+</script>
+
+</body>
+</html>

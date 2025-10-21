@@ -4,20 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Access | Sangam Event</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/css/admin-style.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    .card:hover {
-        cursor: pointer;
-        box-shadow: 0 0 15px #8b5cf6;
-    }
-    .admin-section h1 {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-  </style>
 </head>
 <body>
+<!-- Animated background elements -->
+<div class="background-elements">
+  <div class="bg-element bg-element-1"></div>
+  <div class="bg-element bg-element-2"></div>
+  <div class="bg-element bg-element-3"></div>
+  <div class="bg-element bg-element-4"></div>
+</div>
+
+<!-- Grid overlay -->
+<div class="grid-overlay"></div>
 
 <!-- Navbar -->
 <header class="navbar">
@@ -29,51 +29,97 @@
     <a th:href="@{/admin}">Dashboard</a>
     <a th:href="@{/admin/requests}">Bookings</a>
     <a th:href="@{/admin/venues}">Venues</a>
+    <a href="/admin/reports" th:href="@{/admin/reports}" class="nav-link active">Reports</a>
+    <a href="/admin/users" th:href="@{/admin/users}" class="nav-link active">Users</a>
     <a th:href="@{/login}">Logout</a>
   </nav>
 </header>
 
 <!-- Hero Section -->
 <section class="hero">
-  <h1>Welcome, Aryan</h1>
-  <p>Manage user bookings, approve/deny requests, and oversee event venues.</p>
+  <div>
+    <h1>Welcome, Admin</h1>
+    <p>Manage user bookings, approve/deny requests, and oversee event venues with advanced admin controls.</p>
+  </div>
 </section>
 
 <!-- Admin Actions -->
-<section class="content-section admin-section">
-  <h1>Admin Controls</h1>
-  <div class="card-container">
+<section class="content-section">
+  <div class="admin-section">
+    <h1>Admin Controls</h1>
+    <div class="card-container">
 
-    <a th:href="@{/admin/requests}" class="card">
-      <img src="images/Admin_Requests.png" alt="Booking Requests">
-      <h2>Booking Requests</h2>
-      <p>Review and approve or reject booking requests from users.</p>
-    </a>
+      <!-- Booking Requests Card -->
+      <a th:href="@{/admin/requests}" class="card requests">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZG1pbiUyMGRhc2hib2FyZCUyMGFuYWx5dGljc3xlbnwxfHx8fDE3NTk4NDkzMTd8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Booking Requests">
+        <div class="card-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="card-content">
+          <h2>Booking Requests</h2>
+          <p>Review and approve or reject booking requests from users. Monitor pending applications and manage event scheduling efficiently.</p>
+          <div class="card-action">
+            <i class="fas fa-arrow-right"></i>
+            <span>MANAGE REQUESTS</span>
+          </div>
+        </div>
+      </a>
 
-    <a th:href="@{/admin/venues}" class="card">
-      <img src="images/Admin_Venues.png" alt="Manage Venues">
-      <h2>Manage Venues</h2>
-      <p>Add, edit, or remove event venues from the system.</p>
-    </a>
+      <!-- Manage Venues Card -->
+      <a th:href="@{/admin/venues}" class="card venues">
+        <img src="https://images.unsplash.com/photo-1713627157071-6b0adf318ba7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2ZW51ZSUyMG1hbmFnZW1lbnQlMjBidWlsZGluZ3xlbnwxfHx8fDE3NTk4NTI2NjN8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Manage Venues">
+        <div class="card-icon">
+          <i class="fas fa-building"></i>
+        </div>
+        <div class="card-content">
+          <h2>Manage Venues</h2>
+          <p>Add, edit, or remove event venues from the system. Update venue details, pricing, and availability to keep your inventory current.</p>
+          <div class="card-action">
+            <i class="fas fa-arrow-right"></i>
+            <span>MANAGE VENUES</span>
+          </div>
+        </div>
+      </a>
 
-    <a th:href="@{/admin/users}" class="card">
-      <img src="images/Admin_Users.png" alt="Manage Users">
-      <h2>Manage Users</h2>
-      <p>View registered users and assign roles.</p>
-    </a>
+      <!-- Manage Users Card -->
+      <a th:href="@{/admin/users}" class="card users">
+        <img src="https://images.unsplash.com/photo-1646579886741-12b59840c63f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1c2VyJTIwbWFuYWdlbWVudCUyMHRlYW18ZW58MXx8fHwxNzU5ODUyNjY5fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Manage Users">
+        <div class="card-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="card-content">
+          <h2>Manage Users</h2>
+          <p>View registered users and assign roles. Control user permissions, monitor user activity, and maintain system security.</p>
+          <div class="card-action">
+            <i class="fas fa-arrow-right"></i>
+            <span>MANAGE USERS</span>
+          </div>
+        </div>
+      </a>
 
-    <a th:href="@{/admin/reports}" class="card">
-      <img src="images/Admin_Reports.png" alt="Reports">
-      <h2>Reports</h2>
-      <p>Generate and view booking and revenue reports.</p>
-    </a>
+      <!-- Reports Card -->
+      <a th:href="@{/admin/reports}" class="card reports">
+        <img src="https://images.unsplash.com/photo-1748609160056-7b95f30041f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHJlcG9ydHMlMjBhbmFseXRpY3N8ZW58MXx8fHwxNzU5ODUyNjcyfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Reports">
+        <div class="card-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="card-content">
+          <h2>Reports & Analytics</h2>
+          <p>Generate and view comprehensive booking and revenue reports. Analyze performance metrics and track business growth.</p>
+          <div class="card-action">
+            <i class="fas fa-arrow-right"></i>
+            <span>VIEW REPORTS</span>
+          </div>
+        </div>
+      </a>
 
+    </div>
   </div>
 </section>
 
 <!-- Footer -->
 <footer class="footer">
-  <p>&copy; 2025 Sangam. Admin Panel.</p>
+  <p>&copy; 2025 Sangam Event. Admin Panel - Secure Access</p>
 </footer>
 
 </body>

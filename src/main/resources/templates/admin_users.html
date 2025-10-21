@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Users | Sangam Event Admin</title>
+  <link rel="stylesheet" th:href="@{/css/admin-style.css}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- Animated background elements -->
+<div class="background-elements">
+  <div class="bg-element bg-element-1"></div>
+  <div class="bg-element bg-element-2"></div>
+  <div class="bg-element bg-element-3"></div>
+  <div class="bg-element bg-element-4"></div>
+</div>
+
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <span class="logo-text">Admin Access</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/admin" th:href="@{/admin}" class="nav-link">Dashboard</a>
+      <a href="/admin/requests" th:href="@{/admin/requests}" class="nav-link">Bookings</a>
+      <a href="/admin/venues" th:href="@{/admin/venues}" class="nav-link">Venues</a>
+      <a href="/admin/reports" th:href="@{/admin/reports}" class="nav-link active">Reports</a>
+      <a href="/admin/users" th:href="@{/admin/users}" class="nav-link active">Users</a>
+      <a href="/login" th:href="@{/login}" class="nav-link">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<section class="content-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="header-icon">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <h1 class="section-title">Registered Users</h1>
+      <div class="section-line"></div>
+      <p class="section-subtitle">Manage all registered users in the system</p>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>
+            <i class="fa-solid fa-hashtag"></i>
+            User ID
+          </th>
+          <th>
+            <i class="fa-solid fa-user"></i>
+            Name
+          </th>
+          <th>
+            <i class="fa-solid fa-envelope"></i>
+            Email
+          </th>
+          <th>
+            <i class="fa-solid fa-shield-halved"></i>
+            Roles
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+          <td th:text="${user.userId}">1</td>
+          <td>
+            <div class="user-info">
+              <div class="user-avatar">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <span th:text="${user.name}">John Doe</span>
+            </div>
+          </td>
+          <td th:text="${user.email}">john@example.com</td>
+          <td>
+            <div class="roles-container">
+              <span class="role-badge" th:each="role : ${user.authorities}" th:text="${role.authority}">ROLE_USER</span>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="action-buttons">
+      <a href="/admin" th:href="@{/admin}" class="back-button">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
+        <div class="btn-shine"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Sangam. Admin Panel - All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -6,9 +6,9 @@
   <title>Sangam | Wedding Venues</title>
   <link rel="stylesheet" th:href="@{/css/venues.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style></style>
 </head>
 <body>
-
 <!-- Animated background elements -->
 <div class="background-elements">
   <div class="bg-element bg-element-1"></div>
@@ -25,11 +25,12 @@
       </div>
       <span class="logo-text">Sangam</span>
     </div>
+
     <nav class="nav-links">
       <a href="/" th:href="@{/}" class="nav-link">Home</a>
-      <a href="/events" th:href="@{/events}" class="nav-link">Events</a>
       <a href="/about" th:href="@{/about}" class="nav-link">About</a>
       <a href="/contact" th:href="@{/contact}" class="nav-link">Contact</a>
+      <a th:href="@{/login}" class="nav-link">Logout</a>
 
       <!-- Enhanced Location Dropdown -->
       <div class="dropdown">
@@ -40,16 +41,13 @@
         </button>
         <div class="dropdown-content">
           <a th:href="@{/wedding-venues/location/Mumbai}">
-            <i class="fa-solid fa-location-dot"></i>
-            Mumbai
+            <i class="fa-solid fa-location-dot"></i> Mumbai
           </a>
           <a th:href="@{/wedding-venues/location/Thane}">
-            <i class="fa-solid fa-location-dot"></i>
-            Thane
+            <i class="fa-solid fa-location-dot"></i> Thane
           </a>
           <a th:href="@{/wedding-venues/location/Pune}">
-            <i class="fa-solid fa-location-dot"></i>
-            Pune
+            <i class="fa-solid fa-location-dot"></i> Pune
           </a>
         </div>
       </div>
@@ -78,19 +76,16 @@
 <section class="content-section">
   <!-- Background gradient -->
   <div class="section-background"></div>
-
   <div class="section-container">
+
     <!-- Enhanced Section Header -->
     <div class="section-header">
       <div class="section-badge">
         <i class="fa-solid fa-sparkles"></i>
         <span>Available Venues</span>
       </div>
-
       <h2 class="section-title">Choose Your Dream Venue</h2>
-
       <div class="section-line"></div>
-
       <p class="section-subtitle">
         Discover beautiful wedding venues that will make your special day truly unforgettable
       </p>
@@ -100,52 +95,40 @@
     <div class="card-container">
       <div class="card" th:each="event : ${weddingEvents}">
         <div class="card-glow"></div>
-
         <div class="card-image">
           <img th:src="@{${event.imageUrl}}" alt="Wedding Venue"/>
-
           <div class="card-overlay"></div>
           <div class="card-color-overlay rose"></div>
-
           <div class="category-badge rose">
             <i class="fa-solid fa-heart"></i>
             <span>Wedding Venue</span>
           </div>
-
           <div class="icon-corner">
             <i class="fa-solid fa-heart"></i>
           </div>
         </div>
-
         <div class="card-content">
           <h3 class="card-title" th:text="${event.name}">Venue Name</h3>
-
           <p class="card-description" th:text="${event.description}">
             Venue description will appear here
           </p>
-
           <div class="venue-info-section">
             <div class="location-info">
               <i class="fa-solid fa-map-pin"></i>
               <span th:text="${event.location}">Location</span>
             </div>
           </div>
-
           <div class="features-list">
+                            <span class="feature-tag">
+                                <div class="feature-dot"></div> Custom Decorations
+                            </span>
             <span class="feature-tag">
-              <div class="feature-dot"></div>
-              Custom Decorations
-            </span>
+                                <div class="feature-dot"></div> Professional Photography
+                            </span>
             <span class="feature-tag">
-              <div class="feature-dot"></div>
-              Professional Photography
-            </span>
-            <span class="feature-tag">
-              <div class="feature-dot"></div>
-              Catering Services
-            </span>
+                                <div class="feature-dot"></div> Catering Services
+                            </span>
           </div>
-
           <div class="card-bottom">
             <div class="card-info">
               <div class="info-item">
@@ -157,7 +140,6 @@
                 <span>Any Location</span>
               </div>
             </div>
-
             <a th:href="@{/event/{id}(id=${event.eventId})}" class="view-details-btn">
               <span>View Details</span>
               <i class="fa-solid fa-arrow-right"></i>
@@ -170,18 +152,16 @@
     <!-- Enhanced CTA section -->
     <div class="cta-section">
       <div class="cta-container">
-        <h3 class="cta-title">
-          Planning Your Dream Wedding?
-        </h3>
+        <h3 class="cta-title">Planning Your Dream Wedding?</h3>
         <p class="cta-description">
           We specialize in creating magical wedding experiences with custom themes, elegant decorations, and professional services tailored to your vision.
         </p>
         <a href="/contact" th:href="@{/contact}" class="cta-btn">
-          <i class="fa-solid fa-heart"></i>
-          Plan Dream Wedding
+          <i class="fa-solid fa-heart"></i> Plan Dream Wedding
         </a>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -190,6 +170,5 @@
     <p>&copy; 2025 Sangam. All rights reserved.</p>
   </div>
 </footer>
-
 </body>
 </html>

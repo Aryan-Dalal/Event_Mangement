@@ -2,69 +2,81 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <title>Booking Success | Sangam</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}" />
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    .success-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 60px 20px;
-    }
-    .success-container i {
-      font-size: 80px;
-      color: #8b5cf6;
-      margin-bottom: 20px;
-    }
-    .success-container h1 {
-      font-size: 32px;
-      margin-bottom: 15px;
-    }
-    .success-container p {
-      color: #ccc;
-      font-size: 18px;
-      margin-bottom: 25px;
-    }
-    .success-container a {
-      padding: 12px 20px;
-      background-color: #8b5cf6;
-      color: white;
-      font-weight: bold;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .success-container a:hover {
-      box-shadow: 0 0 12px #8b5cf6;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking Success | Sangam Event</title>
+  <link rel="stylesheet" th:href="@{/css/booking-success-style.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
+<!-- Animated background elements -->
+<div class="background-elements">
+  <div class="bg-element bg-element-1"></div>
+  <div class="bg-element bg-element-2"></div>
+  <div class="bg-element bg-element-3"></div>
+  <div class="bg-element bg-element-4"></div>
+</div>
+
 <header class="navbar">
-  <div class="logo"><i class="fa-solid fa-hands-praying"></i> <span>Sangam</span></div>
-  <nav class="nav-links">
-    <a th:href="@{/}">Home</a>
-    <a th:href="@{/events}">Events</a>
-    <a th:href="@{/about}">About</a>
-    <a th:href="@{/contact}">Contact</a>
-  </nav>
+  <div class="nav-container">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-hands-praying"></i>
+      </div>
+      <span class="logo-text">Sangam</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/" th:href="@{/}" class="nav-link">Home</a>
+      <a href="/events" th:href="@{/events}" class="nav-link">Events</a>
+      <a href="/about" th:href="@{/about}" class="nav-link">About</a>
+      <a href="/contact" th:href="@{/contact}" class="nav-link">Contact</a>
+    </nav>
+  </div>
 </header>
 
-<section class="success-container">
-  <i class="fa-solid fa-circle-check"></i>
-  <h1>Booking Request Submitted!</h1>
-  <p>Your request has been sent successfully and is pending admin approval.</p>
-  <a th:href="@{/events}">Back to Events</a>
+<section class="success-section">
+  <div class="success-container">
+    <div class="success-icon-wrapper">
+      <div class="icon-glow"></div>
+      <i class="fa-solid fa-circle-check success-icon"></i>
+    </div>
+
+    <h1 class="success-title">Booking Request Submitted!</h1>
+
+    <p class="success-message">
+      Your booking request has been sent successfully and is pending admin approval.
+      We'll notify you once your booking is confirmed.
+    </p>
+
+    <div class="success-details">
+      <p>
+        <i class="fa-solid fa-clock"></i>
+        You will receive a confirmation email shortly
+      </p>
+      <p>
+        <i class="fa-solid fa-check-double"></i>
+        Our team will review your request within 24 hours
+      </p>
+    </div>
+
+    <a href="/events" th:href="@{/events}" class="success-btn">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Back to Events</span>
+      <div class="btn-shine"></div>
+    </a>
+  </div>
+
+  <div class="success-decoration">
+    <div class="floating-element floating-1"></div>
+    <div class="floating-element floating-2"></div>
+    <div class="floating-element floating-3"></div>
+  </div>
 </section>
 
 <footer class="footer">
-  <p>&copy; 2025 Sangam. All rights reserved.</p>
+  <div class="footer-content">
+    <p>&copy; 2025 Sangam. All rights reserved.</p>
+  </div>
 </footer>
 
 </body>

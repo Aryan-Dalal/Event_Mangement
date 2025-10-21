@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Reports | Sangam Event</title>
+  <link rel="stylesheet" th:href="@{/css/admin-style.css}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+</head>
+<body>
+
+<!-- Animated background elements -->
+<div class="background-elements">
+  <div class="bg-element bg-element-1"></div>
+  <div class="bg-element bg-element-2"></div>
+  <div class="bg-element bg-element-3"></div>
+  <div class="bg-element bg-element-4"></div>
+</div>
+
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <span class="logo-text">Admin Access</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/admin" th:href="@{/admin}" class="nav-link">Dashboard</a>
+      <a href="/admin/requests" th:href="@{/admin/requests}" class="nav-link">Bookings</a>
+      <a href="/admin/venues" th:href="@{/admin/venues}" class="nav-link">Venues</a>
+      <a href="/admin/reports" th:href="@{/admin/reports}" class="nav-link active">Reports</a>
+      <a href="/admin/users" th:href="@{/admin/users}" class="nav-link active">Users</a>
+      <a href="/login" th:href="@{/login}" class="nav-link">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<section class="content-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="header-icon">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <h1 class="section-title">Reports & Analytics</h1>
+      <div class="section-line"></div>
+      <p class="section-subtitle">Comprehensive overview of system statistics</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <!-- Total Users Card -->
+      <div class="stat-card users">
+        <div class="stat-icon">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-title">Total Users</h3>
+          <p class="stat-value" th:text="${users.size()}">0</p>
+          <p class="stat-label">Registered Users</p>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+
+      <!-- Pending Bookings Card -->
+      <div class="stat-card pending">
+        <div class="stat-icon">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-title">Pending</h3>
+          <p class="stat-value" th:text="${pendingBookings}">0</p>
+          <p class="stat-label">Awaiting Approval</p>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+
+      <!-- Approved Bookings Card -->
+      <div class="stat-card approved">
+        <div class="stat-icon">
+          <i class="fa-solid fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-title">Approved</h3>
+          <p class="stat-value" th:text="${approvedBookings}">0</p>
+          <p class="stat-label">Confirmed Bookings</p>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+
+      <!-- Cancelled Bookings Card -->
+      <div class="stat-card cancelled">
+        <div class="stat-icon">
+          <i class="fa-solid fa-times-circle"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-title">Cancelled</h3>
+          <p class="stat-value" th:text="${cancelledBookings}">0</p>
+          <p class="stat-label">Rejected Bookings</p>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+
+      <!-- Revenue Card -->
+      <div class="stat-card revenue">
+        <div class="stat-icon">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-title">Total Revenue</h3>
+          <p class="stat-value">₹<span th:text="${totalRevenue}">0</span></p>
+          <p class="stat-label">Overall Earnings</p>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+    </div>
+
+    <!-- Top Booked Events Table -->
+    <div class="report-section">
+      <div class="report-header">
+        <h2 class="report-title">
+          <i class="fa-solid fa-trophy"></i>
+          Top Booked Hotels / Events
+        </h2>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th>
+              <i class="fa-solid fa-building"></i>
+              Hotel / Event Name
+            </th>
+            <th>
+              <i class="fa-solid fa-map-marker-alt"></i>
+              Location
+            </th>
+            <th>
+              <i class="fa-solid fa-chart-bar"></i>
+              Number of Bookings
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="row, iterStat : ${mostBookedEvents}">
+            <td>
+              <div class="event-info">
+                <div class="rank-badge" th:classappend="${iterStat.index == 0 ? 'rank-1' : (iterStat.index == 1 ? 'rank-2' : 'rank-3')}">
+                  <span th:text="${iterStat.index + 1}">1</span>
+                </div>
+                <span th:text="${row[0].name}">Event Name</span>
+              </div>
+            </td>
+            <td>
+              <span class="location-text" th:text="${row[0].location}">Location</span>
+            </td>
+            <td>
+              <div class="booking-count">
+                <span class="count-badge" th:text="${row[1]}">0</span>
+                <span class="count-label">bookings</span>
+              </div>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(mostBookedEvents)}">
+            <td colspan="3" class="no-data">
+              <i class="fa-solid fa-inbox"></i>
+              <span>No bookings yet</span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="/admin" th:href="@{/admin}" class="back-button">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
+        <div class="btn-shine"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Sangam. Admin Panel - All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

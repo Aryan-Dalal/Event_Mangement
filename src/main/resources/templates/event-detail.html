@@ -7,62 +7,801 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #161616; color: white; }
-        .main-container { display: flex; max-width: 1200px; margin: 40px auto; background-color: #252525; border-radius: 10px; overflow: hidden; box-shadow: 0 0 10px #000; }
-        .image-gallery { flex: 0 0 40%; padding: 20px; }
-        .image-gallery img { width: 100%; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.5); }
-        .info-section { flex: 1 1 60%; padding: 30px; }
-        .checkbox-group input { margin-right: 10px; accent-color: #8b5cf6; }
-        .total-price { margin-top: 10px; font-size: 18px; font-weight: bold; color: #8b5cf6; }
-        .advance-payment { font-size: 16px; font-weight: bold; color: #ffcc00; margin-top: 5px; }
-        .event-buttons button, .event-buttons a { padding: 12px 24px; background-color: #8b5cf6; color: white; font-weight: bold; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; margin-top: 15px; }
-        .already-booked { margin-top: 20px; font-size: 18px; font-weight: bold; color: #10b981; }
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f0f1a;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animated background elements */
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-element-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(139, 92, 246, 0.1) 70%);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-element-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 70%);
+            bottom: 15%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .bg-element-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.03) 70%);
+            top: 50%;
+            right: 25%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+                opacity: 0.6;
+            }
+        }
+
+        /* Grid pattern overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.02;
+            background-image:
+                linear-gradient(rgba(147, 51, 234, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(147, 51, 234, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Header styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 26, 0.9);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            z-index: 1000;
+            padding: 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .logo-icon i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link:hover {
+            color: #8b5cf6;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Main container */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* Image gallery section */
+        .image-gallery {
+            position: relative;
+        }
+
+        .image-container {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .image-container:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
+            transform: scale(1.02);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 16px;
+            transition: transform 0.7s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Image overlay effects */
+        .image-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .image-container:hover .image-overlay {
+            opacity: 1;
+        }
+
+        /* Info section */
+        .info-section {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), transparent, rgba(59, 130, 246, 0.05));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .info-section:hover::before {
+            opacity: 1;
+        }
+
+        /* Event title */
+        .event-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        /* Event details */
+        .event-details {
+            margin-bottom: 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 1rem;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .detail-icon {
+            width: 20px;
+            height: 20px;
+            color: #8b5cf6;
+            margin-top: 2px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #a78bfa;
+            min-width: 120px;
+        }
+
+        .detail-value {
+            color: #e2e8f0;
+            flex: 1;
+        }
+
+        /* Calendar section */
+        .calendar-section {
+            margin: 2rem 0;
+            padding: 24px;
+            background: rgba(51, 65, 85, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .calendar-label {
+            display: block;
+            font-weight: 600;
+            color: #a78bfa;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        #bookingDates {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        #bookingDates:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        #bookingDates::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Price options */
+        .price-section {
+            margin: 2rem 0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: rgba(51, 65, 85, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .checkbox-item:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #8b5cf6;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            color: #e2e8f0;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .price-highlight {
+            color: #a78bfa;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Price summary */
+        .price-summary {
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .advance-payment {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fbbf24;
+        }
+
+        /* Booking section */
+        .booking-section {
+            margin-top: 2rem;
+        }
+
+        .already-booked {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .already-booked-text {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .book-button {
+            width: 100%;
+            padding: 18px 32px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .book-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .book-button:active {
+            transform: translateY(0);
+        }
+
+        .book-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .book-button:hover::before {
+            left: 100%;
+        }
+
+        /* Flash messages */
+        .flash-message {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            max-width: 400px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .flash-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
+
+        .flash-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin-top: 100px;
+            }
+
+            .event-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 0 15px;
+                margin-top: 90px;
+            }
+
+            .info-section,
+            .image-container {
+                padding: 24px;
+            }
+
+            .event-title {
+                font-size: 2rem;
+            }
+
+            .checkbox-group {
+                gap: 12px;
+            }
+
+            .checkbox-item {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                font-size: 14px;
+            }
+
+            .event-title {
+                font-size: 1.75rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .info-section,
+            .image-container {
+                padding: 20px;
+            }
+
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .detail-label {
+                min-width: auto;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0f1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #8b5cf6, #3b82f6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #a78bfa, #60a5fa);
+        }
+
+        /* Flatpickr custom styling */
+        .flatpickr-calendar {
+            background: rgba(30, 41, 59, 0.95) !important;
+            border: 1px solid rgba(139, 92, 246, 0.3) !important;
+            border-radius: 12px !important;
+            backdrop-filter: blur(20px) !important;
+        }
+
+        .flatpickr-day {
+            color: #e2e8f0 !important;
+        }
+
+        .flatpickr-day:hover {
+            background: rgba(139, 92, 246, 0.3) !important;
+        }
+
+        .flatpickr-day.selected {
+            background: #8b5cf6 !important;
+        }
+
+        .flatpickr-months {
+            background: transparent !important;
+        }
+
+        .flatpickr-month {
+            color: #a78bfa !important;
+        }
+
+        .flatpickr-weekday {
+            color: #9ca3af !important;
+        }
     </style>
 </head>
 <body>
+<!-- Animated background elements -->
+<div class="background-elements">
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+</div>
 
+<!-- Grid overlay -->
+<div class="grid-overlay"></div>
+
+<!-- Header -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <span class="logo-text">Sangam</span>
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/events" class="nav-link">Events</a>
+            <a href="/about" class="nav-link">About</a>
+            <a href="/contact" class="nav-link">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main content -->
 <div class="main-container">
-
     <!-- Left: Event Image -->
     <div class="image-gallery">
-        <img th:src="@{${event.imageUrl}}" th:alt="${event.name}"/>
+        <div class="image-container">
+            <img th:src="@{${event.imageUrl}}" th:alt="${event.name}"/>
+            <div class="image-overlay"></div>
+        </div>
     </div>
 
     <!-- Right: Event Info -->
     <div class="info-section">
-        <h1 th:text="${event.name}">Event Name</h1>
-        <p><strong>Description:</strong> <span th:text="${event.description}"></span></p>
-        <p><strong>Location:</strong> <span th:text="${event.location}"></span></p>
-        <p><strong>Address:</strong> <span th:text="${event.address}"></span></p>
-        <p><strong>Category:</strong> <span th:text="${event.category}"></span></p>
-        <p><strong>Capacity:</strong> <span th:text="${event.capacity}"></span></p>
-        <p><strong>Decoration Charges:</strong> ₹<span th:text="${event.decorationPrice}"></span></p>
+        <h1 class="event-title" th:text="${event.name}">Event Name</h1>
+
+        <div class="event-details">
+            <div class="detail-item">
+                <i class="fas fa-align-left detail-icon"></i>
+                <span class="detail-label">Description:</span>
+                <span class="detail-value" th:text="${event.description}">Event description</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-map-marker-alt detail-icon"></i>
+                <span class="detail-label">Location:</span>
+                <span class="detail-value" th:text="${event.location}">Event location</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-home detail-icon"></i>
+                <span class="detail-label">Address:</span>
+                <span class="detail-value" th:text="${event.address}">Event address</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-tag detail-icon"></i>
+                <span class="detail-label">Category:</span>
+                <span class="detail-value" th:text="${event.category}">Event category</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-users detail-icon"></i>
+                <span class="detail-label">Capacity:</span>
+                <span class="detail-value" th:text="${event.capacity}">Event capacity</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-paint-brush detail-icon"></i>
+                <span class="detail-label">Decoration:</span>
+                <span class="detail-value">₹<span th:text="${event.decorationPrice}"></span></span>
+            </div>
+        </div>
 
         <!-- Calendar Selection -->
-        <label>Select Start and End Dates:</label>
-        <input type="text" id="bookingDates" placeholder="Select date range"/>
+        <div class="calendar-section">
+            <label class="calendar-label">
+                <i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>
+                Select Start and End Dates
+            </label>
+            <input type="text" id="bookingDates" placeholder="Click to select date range"/>
+        </div>
 
         <!-- Price Options -->
-        <div class="checkbox-group">
-            <label>
-                <input type="checkbox" id="vegCheckbox" th:value="${event.vegPrice}"> Veg Price: ₹<span th:text="${event.vegPrice}"></span>
-            </label>
-            <label>
-                <input type="checkbox" id="nonVegCheckbox" th:value="${event.nonvegPrice}"> Non-Veg Price: ₹<span th:text="${event.nonvegPrice}"></span>
-            </label>
+        <div class="price-section">
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="vegCheckbox" th:value="${event.vegPrice}">
+                    <label for="vegCheckbox">
+                        <i class="fas fa-leaf" style="color: #10b981; margin-right: 8px;"></i>
+                        Vegetarian Menu
+                    </label>
+                    <span class="price-highlight">₹<span th:text="${event.vegPrice}"></span></span>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="nonVegCheckbox" th:value="${event.nonvegPrice}">
+                    <label for="nonVegCheckbox">
+                        <i class="fas fa-drumstick-bite" style="color: #f59e0b; margin-right: 8px;"></i>
+                        Non-Vegetarian Menu
+                    </label>
+                    <span class="price-highlight">₹<span th:text="${event.nonvegPrice}"></span></span>
+                </div>
+            </div>
         </div>
 
         <!-- Price Summary -->
-        <div class="total-price" id="totalPrice">Total Price: ₹0</div>
-        <div class="advance-payment" id="advancePayment">Advance Payment (10% Online): ₹0</div>
+        <div class="price-summary">
+            <div class="total-price" id="totalPrice">
+                <i class="fas fa-calculator" style="margin-right: 8px;"></i>
+                Total Price: ₹0
+            </div>
+            <div class="advance-payment" id="advancePayment">
+                <i class="fas fa-credit-card" style="margin-right: 8px;"></i>
+                Advance Payment (10% Online): ₹0
+            </div>
+        </div>
 
-        <!-- Booking / Already Booked -->
-        <div class="event-buttons">
-
-            <!-- Only show message if current user has booked -->
+        <!-- Booking Section -->
+        <div class="booking-section">
+            <!-- Already Booked Message -->
             <div th:if="${userBooking != null}" class="already-booked">
-                You have already booked this event.
-                Status: <span th:text="${userBooking.status}"></span>
+                <div class="already-booked-text">
+                    <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                    You have already booked this event.
+                    <br>
+                    <strong>Status: <span th:text="${userBooking.status}"></span></strong>
+                </div>
             </div>
 
             <!-- Booking Form -->
@@ -75,18 +814,18 @@
                 <input type="hidden" id="vegPriceInput" name="vegPrice"/>
                 <input type="hidden" id="nonvegPriceInput" name="nonvegPrice"/>
                 <input type="hidden" id="totalPriceInput" name="totalPrice"/>
-                <button type="submit">Book</button>
+                <button type="submit" class="book-button">
+                    <i class="fas fa-calendar-check" style="margin-right: 8px;"></i>
+                    Book This Event
+                </button>
             </form>
-
         </div>
-
     </div>
-
-    <!-- Flash Messages -->
-    <div th:if="${errorMessage}" style="color:#ff4d4d; font-weight:bold; margin-bottom:10px;" th:text="${errorMessage}"></div>
-    <div th:if="${successMessage}" style="color:#10b981; font-weight:bold; margin-bottom:10px;" th:text="${successMessage}"></div>
-
 </div>
+
+<!-- Flash Messages -->
+<div th:if="${errorMessage}" class="flash-message flash-error" th:text="${errorMessage}"></div>
+<div th:if="${successMessage}" class="flash-message flash-success" th:text="${successMessage}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script th:inline="javascript">
@@ -95,6 +834,16 @@
     bookedRanges = bookedRanges ? JSON.parse(bookedRanges) : [];
     let disabledDates = bookedRanges.map(r => ({ from: r.from, to: r.to }));
 
+    const bookButton = document.querySelector('.book-button');
+
+    // Initially disable the book button
+    bookButton.disabled = true;
+    bookButton.style.opacity = '0.6';
+    bookButton.style.cursor = 'not-allowed';
+
+    let selectedStartDate = null;
+    let selectedEndDate = null;
+
     flatpickr("#bookingDates", {
         mode: "range",
         minDate: "today",
@@ -102,9 +851,15 @@
         dateFormat: "Y-m-d",
         onClose: function(selectedDates) {
             if (selectedDates.length === 2) {
-                document.getElementById('startDate').value = selectedDates[0].toISOString().split('T')[0];
-                document.getElementById('endDate').value = selectedDates[1].toISOString().split('T')[0];
+                selectedStartDate = selectedDates[0].toISOString().split('T')[0];
+                selectedEndDate = selectedDates[1].toISOString().split('T')[0];
+                document.getElementById('startDate').value = selectedStartDate;
+                document.getElementById('endDate').value = selectedEndDate;
+            } else {
+                selectedStartDate = null;
+                selectedEndDate = null;
             }
+            updateBookButtonState();
         }
     });
 
@@ -132,8 +887,8 @@
         if (nonVegCheckbox.checked) total += capacity * nonvegPrice;
         if (vegCheckbox.checked || nonVegCheckbox.checked) total += decorationCharges;
 
-        totalPriceLabel.textContent = `Total Price: ₹${total.toLocaleString()}`;
-        advancePaymentLabel.textContent = `Advance Payment (10% Online): ₹${Math.round(total * 0.10).toLocaleString()}`;
+        totalPriceLabel.innerHTML = `<i class="fas fa-calculator" style="margin-right: 8px;"></i>Total Price: ₹${total.toLocaleString()}`;
+        advancePaymentLabel.innerHTML = `<i class="fas fa-credit-card" style="margin-right: 8px;"></i>Advance Payment (10% Online): ₹${Math.round(total * 0.10).toLocaleString()}`;
 
         // Update hidden inputs for form submission
         vegInput.value = vegPrice;
@@ -141,11 +896,45 @@
         vegSelectedInput.value = vegCheckbox.checked;
         nonvegSelectedInput.value = nonVegCheckbox.checked;
         totalPriceInput.value = total;
+
+        updateBookButtonState();
     }
 
     vegCheckbox.addEventListener('change', calculateTotal);
     nonVegCheckbox.addEventListener('change', calculateTotal);
-</script>
 
+    function updateBookButtonState() {
+        // Enable the button if a date range is selected AND at least one menu is checked
+        if (selectedStartDate && (vegCheckbox.checked || nonVegCheckbox.checked)) {
+            bookButton.disabled = false;
+            bookButton.style.opacity = '1';
+            bookButton.style.cursor = 'pointer';
+        } else {
+            bookButton.disabled = true;
+            bookButton.style.opacity = '0.6';
+            bookButton.style.cursor = 'not-allowed';
+        }
+    }
+
+    // Auto-hide flash messages
+    setTimeout(() => {
+        const flashMessages = document.querySelectorAll('.flash-message');
+        flashMessages.forEach(msg => {
+            msg.style.animation = 'slideOut 0.5s ease-in forwards';
+        });
+    }, 5000);
+
+    // Add slideOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 </body>
 </html>
