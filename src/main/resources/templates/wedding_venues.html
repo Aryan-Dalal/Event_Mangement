@@ -6,7 +6,6 @@
   <title>Sangam | Wedding Venues</title>
   <link rel="stylesheet" th:href="@{/css/venues.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style></style>
 </head>
 <body>
 <!-- Animated background elements -->
@@ -34,23 +33,27 @@
 
       <!-- Enhanced Location Dropdown -->
       <div class="dropdown">
-        <button class="dropdown-btn">
+        <button class="dropdown-btn" id="dropdownToggle">
           <i class="fa-solid fa-map-pin"></i>
           <span>Location</span>
           <i class="fa fa-caret-down"></i>
         </button>
-        <div class="dropdown-content">
+        <div class="dropdown-content" id="dropdownMenu">
           <a th:href="@{/wedding-venues/location/Mumbai}">
-            <i class="fa-solid fa-location-dot"></i> Mumbai
+            <i class="fa-solid fa-location-dot"></i>
+            Mumbai
           </a>
           <a th:href="@{/wedding-venues/location/Thane}">
-            <i class="fa-solid fa-location-dot"></i> Thane
+            <i class="fa-solid fa-location-dot"></i>
+            Thane
           </a>
           <a th:href="@{/wedding-venues/location/Pune}">
-            <i class="fa-solid fa-location-dot"></i> Pune
+            <i class="fa-solid fa-location-dot"></i>
+            Pune
           </a>
         </div>
       </div>
+
     </nav>
   </div>
 </header>
@@ -170,5 +173,28 @@
     <p>&copy; 2025 Sangam. All rights reserved.</p>
   </div>
 </footer>
+
+<script>
+  const toggleBtn = document.getElementById('dropdownToggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+  if (toggleBtn && dropdownMenu) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+
+    window.addEventListener('click', (e) => {
+      if (!toggleBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') dropdownMenu.classList.remove('show');
+    });
+  }
+</script>
+
 </body>
 </html>

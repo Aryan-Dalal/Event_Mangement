@@ -34,12 +34,12 @@
 
             <!-- Enhanced Location Dropdown -->
             <div class="dropdown">
-                <button class="dropdown-btn">
+                <button class="dropdown-btn" id="dropdownToggle">
                     <i class="fa-solid fa-map-pin"></i>
                     <span>Location</span>
                     <i class="fa fa-caret-down"></i>
                 </button>
-                <div class="dropdown-content">
+                <div class="dropdown-content" id="dropdownMenu">
                     <a th:href="@{/anniversaries/location/Mumbai}">
                         <i class="fa-solid fa-location-dot"></i>
                         Mumbai
@@ -191,6 +191,26 @@
         <p>&copy; 2025 Sangam. All rights reserved.</p>
     </div>
 </footer>
+<script>
+    const toggleBtn = document.getElementById('dropdownToggle');
+    const dropdownMenu = document.getElementById('dropdownMenu');
 
+    if (toggleBtn && dropdownMenu) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!toggleBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+          dropdownMenu.classList.remove('show');
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') dropdownMenu.classList.remove('show');
+      });
+    }
+</script>
 </body>
 </html>

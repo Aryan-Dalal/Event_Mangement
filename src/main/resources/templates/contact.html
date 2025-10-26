@@ -638,9 +638,10 @@
       <span class="logo-text">Sangam</span>
     </a>
     <div class="nav-links">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/about" class="nav-link">About</a>
-      <a href="/contact" class="nav-link active">Contact</a>
+      <a href="/" th:href="@{/}" class="nav-link">Home</a>
+      <a href="/about" th:href="@{/about}" class="nav-link">About</a>
+      <a href="/contact" th:href="@{/contact}" class="nav-link">Contact</a>
+      <a th:href="@{/login}" class="nav-link">Logout</a>
     </div>
   </div>
 </nav>
@@ -758,7 +759,7 @@
             </div>
             <div class="contact-details">
               <h3>Email</h3>
-              <p>dalalaryan957@gmail.com</p>
+              <p>sangamevents80@gmail.com</p>
             </div>
           </div>
         </div>
@@ -773,7 +774,8 @@
             </div>
             <div class="contact-details">
               <h3>Address</h3>
-              <p>New Priyadarshani Soc, Charai Thane (W), 400601</p>
+              <p>201, Sunrise Corporate Tower, Near Palm Avenue Road,
+                Bandra West, Mumbai – 400050, Maharashtra, India</p>
             </div>
           </div>
         </div>
