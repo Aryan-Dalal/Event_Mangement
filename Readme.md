@@ -1,169 +1,87 @@
-🎉 Sangam Event Management
+# 🎉 Sangam Event Management
 
-Sangam is a full-stack Event Management Web Application built with Spring Boot, Thymeleaf, and PostgreSQL. It allows users to browse events, book venues, and manage event details efficiently.
+![Java](https://img.shields.io/badge/Java-17-blue)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3.2-brightgreen)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-📌 Features
+Sangam is a **full-stack Event Management Web Application** designed to help users browse events, book venues, and manage event details efficiently. Built using **Spring Boot**, **Thymeleaf**, and **PostgreSQL**, it provides an intuitive and responsive interface for both admins and users.
 
-🛡️ User Authentication
+---
 
-Secure login & registration
+## 📌 Features
 
-Role-based access (Admin & User)
+- **🛡️ User Authentication & Roles**
+    - Secure login and registration
+    - Role-based access: Admin & User
 
-🎈 Event Management
+- **🎈 Event Management**
+    - Create, update, delete events
+    - Categorize events (Wedding, Birthday, Corporate)
+    - Upload event images
+    - Manage capacity, pricing, and decoration options
 
-Admin can create, update, delete events
+- **🏛️ Venue Management**
+    - Add and manage venues
+    - Track bookings and availability
 
-Event categories (Wedding, Birthday, Corporate, etc.)
+- **👥 User Functionalities**
+    - Browse events by category
+    - View detailed event information
+    - Book events online
 
-Upload event images
+- **📱 Responsive Design**
+    - Mobile-friendly UI using HTML, CSS, and Bootstrap
 
-Manage capacity, pricing, and decoration options
+---
 
-🏛️ Venue Management
+## 💻 Technology Stack
 
-Admin can add and manage venues
+| Layer        | Technology |
+| ------------ | ---------- |
+| Backend      | Spring Boot, Java |
+| Frontend     | Thymeleaf, HTML, CSS, Bootstrap |
+| Database     | PostgreSQL |
+| Security     | Spring Security |
 
-Track bookings and availability
+---
 
-👥 User Features
+## 🗂 Project Structure
 
-Browse events by category
-
-View event details with images, price, and location
-
-Book events online
-
-📱 Responsive Design
-
-Mobile-friendly interface using HTML, CSS, and Bootstrap
-
-💻 Technology Stack
-
-Backend: Spring Boot, Java
-
-Frontend: Thymeleaf, HTML, CSS, Bootstrap
-
-Database: PostgreSQL
-
-Security: Spring Security
-
-Build Tool: Maven
-
-Server: Apache Tomcat
-
-🗂 Project Structure
 Sangam-Event-Management/
 │
 ├── src/main/java/com/example/eventManagement
-│   ├── controller        # Spring MVC Controllers
-│   ├── entity            # JPA Entities
-│   ├── repository        # Repositories
-│   ├── service           # Business Logic Services
-│   └── config            # Security & App Config
+│ ├── controller # Handles HTTP requests
+│ ├── entity # JPA Entity classes
+│ ├── repository # Database interactions
+│ ├── service # Business logic
+│ └── config # Security & App configurations
 │
 ├── src/main/resources
-│   ├── templates         # Thymeleaf HTML pages
-│   ├── static
-│   │   ├── css
-│   │   ├── images
-│   │   └── js
-│   └── application.properties
+│ ├── templates # Thymeleaf HTML pages
+│ ├── static
+│ │ ├── css
+│ │ ├── js
+│ │ ├── images
+│ │ └── screenshots # Store screenshots here
+│ └── application.properties
 │
 ├── pom.xml
 └── README.md
 
-⚙️ Installation
-Prerequisites
+swift
+Copy code
 
-Java 17+
+> 💡 **Tip:** Store your screenshots under `src/main/resources/static/screenshots/`  
+> Example reference in README:
 
-Maven 3.8+
-
-PostgreSQL 14+
-
-IDE (IntelliJ, Eclipse, etc.)
-
-Steps
-
-Clone the repository
-
-git clone https://github.com/your-username/sangam-event-management.git
-cd sangam-event-management
-
-
-Configure Database
-
-Create a PostgreSQL database, e.g., sangam_db
-
-Update application.properties with your credentials:
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/sangam_db
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-
-
-Build the project
-
-mvn clean install
-
-
-Run the application
-
-mvn spring-boot:run
-
-
-Visit in browser: http://localhost:8080/
-
-📝 Usage
-
-Admin
-
-Access dashboard at /admin/dashboard
-
-Manage events & venues
-
-View bookings
-
-User
-
-Browse events
-
-View event details
-
-Book events online
-
+```markdown
+![Homepage](src/main/resources/static/screenshots/homepage.png)
+![Event Details](src/main/resources/static/screenshots/event-details.png)
+![Admin Dashboard](src/main/resources/static/screenshots/admin-detail.png)
 📸 Screenshots
+Homepage
 
-Homepage – Displays all events
+Event Details
 
-Event Details – Shows event info, images, and booking option
-
-Admin Dashboard – Manage events and venues
-
-(Add your screenshots in ./screenshots folder for GitHub display)
-
-🤝 Contributing
-
-Fork the repository
-
-Create a new branch: git checkout -b feature/your-feature
-
-Commit your changes: git commit -m "Add feature"
-
-Push to branch: git push origin feature/your-feature
-
-Open a Pull Request
-
-📜 License
-
-This project is licensed under the MIT License.
-
-📧 Contact
-
-Aryan Dalal
-
-Email: your-email@example.com
-
-GitHub: https://github.com/your-username
+Admin Dashboard
